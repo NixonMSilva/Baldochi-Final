@@ -10,6 +10,15 @@ package Controles;
 import Limites.*;
 
 public class ControleCliente {
-    limiteCliente limCliente;
     
+limiteCliente limCliente;
+    ControlePrincipal ctrPrincipal;
+    
+    public ControleCliente(ControlePrincipal cp){
+        ctrPrincipal = cp;
+    }
+    
+    public void criaJanelaCliente(){
+        new limiteCliente(this);
+    }
 }

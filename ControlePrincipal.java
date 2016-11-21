@@ -18,6 +18,8 @@ public class ControlePrincipal {
     public ControlePrincipal(){
         ctrMercadoria = new ControleMercadoria(this);
         limPrinc = new limPrincipal(this);
+	ctrMercadoria = new ControleMercadoria(this);
+	ctrCliente = new ControleCliente(this);
     }
     
     public ControleMercadoria getCtrMercadoria() {
