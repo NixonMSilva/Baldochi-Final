@@ -1,14 +1,14 @@
 /*
- * COM220 - Programação Orientada a Objetos I
- * Trabalho Final - 28/11/2016
- * 34154 - Matheus Santos Corrêa
- * 34332 - Pedro Spina Guemureman
- * XXXXX - Nixon Moreira Silva
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package Controles;
-
 import Limites.*;
-
+/**
+ *
+ * @author pedrosg
+ */
 public class ControlePrincipal {
     ControleMercadoria ctrMercadoria;
     ControleCliente ctrCliente;
@@ -16,8 +16,9 @@ public class ControlePrincipal {
     limPrincipal limPrinc;
 
     public ControlePrincipal(){
-        ctrMercadoria = new ControleMercadoria(this);
         limPrinc = new limPrincipal(this);
+        ctrMercadoria = new ControleMercadoria(this);
+        ctrCliente = new ControleCliente(this);
     }
     
     public ControleMercadoria getCtrMercadoria() {
