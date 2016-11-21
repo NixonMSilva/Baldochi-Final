@@ -1,20 +1,24 @@
 /*
- * COM220 - Programação Orientada a Objetos I
- * Trabalho Final - 28/11/2016
- * 34154 - Matheus Santos Corrêa
- * 34332 - Pedro Spina Guemureman
- * XXXXX - Nixon Moreira Silva
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package Limites;
-
 import Controles.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class limPrincipal extends JFrame implements ActionListener {
+/**
+ *
+ * @author pedrosg
+ */
+public class limPrincipal extends JFrame implements ActionListener{
 
-    JPanel painelProduto, painelCliente, painelPrincipal, painelVenda, painelConsulta;
+    JPanel painelProduto, painelCliente, painelPrincipal, painelVenda,painelConsulta;
     JButton btnCliente, btnProduto, btnAtualiza, btnVenda, btnConsulta;
     ControlePrincipal ctrPrincipal;
     
@@ -26,10 +30,11 @@ public class limPrincipal extends JFrame implements ActionListener {
         
         //Criacao dos paineis
         painelPrincipal = new JPanel(new GridLayout(5,1));
-        painelProduto = new JPanel(new FlowLayout());
-        painelCliente = new JPanel(new FlowLayout());
-        painelVenda = new JPanel(new FlowLayout());
-        painelConsulta = new JPanel(new FlowLayout());
+        painelProduto = new JPanel();
+        painelProduto.setLayout(new FlowLayout());
+        painelCliente = new JPanel();
+        painelVenda = new JPanel();
+        painelConsulta = new JPanel();
         
         //Criancao dos botoes
         btnProduto = new JButton("Cadastra Produto");
@@ -71,7 +76,7 @@ public class limPrincipal extends JFrame implements ActionListener {
         if(e.getSource().equals(btnProduto)){
             ctrPrincipal.getCtrMercadoria().criaJanelaMercadoria();
         } else if(e.getSource().equals(btnCliente)){
-            
+            ctrPrincipal.getCtrCliente().criaJanelaCliente();
         } else if(e.getSource().equals(btnAtualiza)){
             
         } else if(e.getSource().equals(btnVenda)){
@@ -80,4 +85,5 @@ public class limPrincipal extends JFrame implements ActionListener {
             
         }
     }
+    
 }
