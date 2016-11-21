@@ -7,6 +7,7 @@
  */
 package Limites;
 
+import Controles.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
