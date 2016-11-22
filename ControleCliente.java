@@ -8,10 +8,11 @@
 package Controles;
 
 import Limites.*;
+import entidade.Cliente;
 
 public class ControleCliente {
     
-limiteCliente limCliente;
+    limiteCliente limCliente;
     ControlePrincipal ctrPrincipal;
     
     public ControleCliente(ControlePrincipal cp){
@@ -20,5 +21,10 @@ limiteCliente limCliente;
     
     public void criaJanelaCliente(){
         new limiteCliente(this);
+    }
+    
+    public void cadastraCliente(String pNome, String pEmail, String pCpf,String pEndereco){
+        Cliente c = new Cliente(pNome,pEmail, pCpf,pEndereco);
+        c.getListaCliente().add(c);
     }
 }

@@ -90,7 +90,14 @@ public class limiteCliente extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            ctrCliente.cadastraCliente(txt_nome.getText(),txt_email.getText(),txt_cpf.getText(),
+                    txt_endereco.getText());
+            JOptionPane.showMessageDialog(null,"Cliente cadastrado com sucesso!");
+            this.dispose();
+        }catch(Exception exc) {
+            System.out.println("Erro!\n" + exc);
+        }
     }
     
 }

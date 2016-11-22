@@ -7,8 +7,15 @@
  */
 package entidade;
 
+import java.util.Vector;
+
 public class Cliente {
     private String Nome, email,cpf, endereco;
+    private Vector listaCliente = new Vector();
+
+    public Vector getListaCliente() {
+        return listaCliente;
+    }
     
     public Cliente(String pNome, String pEmail, String pCpf, String pEndereco){
         this.Nome = pNome;
