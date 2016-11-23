@@ -5,7 +5,7 @@
  * 34332 - Pedro Spina Guemureman
  * XXXXX - Nixon Moreira Silva
  */
-package entidade;
+package entidades;
 
 import java.util.*;
 
@@ -14,7 +14,6 @@ public class Mercadoria {
     private int cod, qt_disp;
     private String descricao;
     private float preco, valor_venda;
-    private Vector listaMercadoria = new Vector();
 
     public Mercadoria(int pCod, int pQt, String pDesc, float pPreco, float pV_venda) {
         this.cod = pCod;
@@ -63,12 +62,6 @@ public class Mercadoria {
     public void setValor_venda(float valor_venda) {
         this.valor_venda = valor_venda;
     }
+
     
-    public void setListaMercadoria(Vector listaMercadoria) {
-        this.listaMercadoria = listaMercadoria;
-    }
-    
-    public Vector getListaMercadoria() {
-        return listaMercadoria;
-    }
 }

@@ -7,14 +7,15 @@
  */
 package Controles;
 
-import entidade.*;
+import entidades.*;
 import Limites.*;
+import java.util.ArrayList;
 
 public class ControleMercadoria {
 
-    Mercadoria merc;
-    limiteMercadoria limMercadoria;
-    ControlePrincipal ctrPrincipal;
+    private limiteMercadoria limMercadoria;
+    private ControlePrincipal ctrPrincipal;
+    private ArrayList<Mercadoria> listaMercadoria = new ArrayList<>();
 
     public ControleMercadoria(ControlePrincipal pCtr) {
         ctrPrincipal = pCtr;
@@ -26,17 +27,15 @@ public class ControleMercadoria {
 
     public void cadastrarMercadoria(int pCod, int pQt, String pDesc, float pPreco, float pV_venda) {
         Mercadoria m = new Mercadoria(pCod, pQt, pDesc, pPreco, pV_venda);
-        m.getListaMercadoria().add(m);
+        listaMercadoria.add(m);
     }
 
     public void criaJanelaQt() {
         new limiteEstoque(this);
     }
 
-    public int verificaCodigo(int pCod){
-        Mercadoria ObjM;
-        for(int i=0 ; i< merc.getListaMercadoria().size() ; i++){
-            ObjM =(Mercadoria) merc.getListaMercadoria().get(i);
+    public int verificaCodigo(int pCod){        
+        for(Mercadoria ObjM : merc.getListaMercadoria()){           
             if( ObjM.getCod() == pCod){
                 System.out.println("Encontrou");
                 return 1;
@@ -47,9 +46,7 @@ public class ControleMercadoria {
     }
     
     public void AlteraQtd(int pCod, int pQtd){
-        Mercadoria ObjM=null;
-        for(int i=0 ; i< ObjM.getListaMercadoria().size() ; i++){
-            ObjM =(Mercadoria) ObjM.getListaMercadoria().get(i);
+        for(Mercadoria ObjM : merc.getListaMercadoria()){
             if( ObjM.getCod() == pCod){
                 System.out.println("Quantide: " + ObjM.getQt_disp());
                 ObjM.setQt_disp(ObjM.getQt_disp() + pQtd);  //Altero a qtde
