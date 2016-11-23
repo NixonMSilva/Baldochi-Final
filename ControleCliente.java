@@ -12,6 +12,7 @@ import entidade.Cliente;
 
 public class ControleCliente {
     
+    private ArrayList<CLiente> listaCLiente = new ArrayList<>();
     limiteCliente limCliente;
     ControlePrincipal ctrPrincipal;
     
@@ -25,6 +26,6 @@ public class ControleCliente {
     
     public void cadastraCliente(String pNome, String pEmail, String pCpf,String pEndereco){
         Cliente c = new Cliente(pNome,pEmail, pCpf,pEndereco);
-        c.getListaCliente().add(c);
+        ListaClient.add(c);
     }
 }
