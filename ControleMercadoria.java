@@ -7,13 +7,15 @@
  */
 package Controles;
 
-import entidade.*;
+import entidades.*;
 import Limites.*;
+import java.util.ArrayList;
 
 public class ControleMercadoria {
 
-    limiteMercadoria limMercadoria;
-    ControlePrincipal ctrPrincipal;
+    private limiteMercadoria limMercadoria;
+    private ControlePrincipal ctrPrincipal;
+    private ArrayList<Mercadoria> listaMercadoria = new ArrayList<>();
 
     public ControleMercadoria(ControlePrincipal pCtr) {
         ctrPrincipal = pCtr;
@@ -25,13 +27,34 @@ public class ControleMercadoria {
 
     public void cadastrarMercadoria(int pCod, int pQt, String pDesc, float pPreco, float pV_venda) {
         Mercadoria m = new Mercadoria(pCod, pQt, pDesc, pPreco, pV_venda);
-        m.getListaMercadoria().add(m);
+        listaMercadoria.add(m);
     }
 
-    public void AlterarQt(int pCod, int pQt) {
-        
+    public void criaJanelaQt() {
+        new limiteEstoque(this);
     }
 
+    public int verificaCodigo(int pCod){        
+        for(Mercadoria ObjM : merc.getListaMercadoria()){           
+            if( ObjM.getCod() == pCod){
+                System.out.println("Encontrou");
+                return 1;
+            }
+        }
+        System.out.println("Nao encontrou");
+        return 0;
+    }
+    
+    public void AlteraQtd(int pCod, int pQtd){
+        for(Mercadoria ObjM : merc.getListaMercadoria()){
+            if( ObjM.getCod() == pCod){
+                System.out.println("Quantide: " + ObjM.getQt_disp());
+                ObjM.setQt_disp(ObjM.getQt_disp() + pQtd);  //Altero a qtde
+                System.out.println("Quantide: " + ObjM.getQt_disp());
+            }
+        }
+    }
+    
     public void consultarMercadoria() {
 
     }
