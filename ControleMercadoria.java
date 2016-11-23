@@ -35,7 +35,7 @@ public class ControleMercadoria {
     }
 
     public int verificaCodigo(int pCod){        
-        for(Mercadoria ObjM : merc.getListaMercadoria()){           
+        for(Mercadoria ObjM : listaMercadoria){           
             if( ObjM.getCod() == pCod){
                 System.out.println("Encontrou");
                 return 1;
@@ -46,7 +46,7 @@ public class ControleMercadoria {
     }
     
     public void AlteraQtd(int pCod, int pQtd){
-        for(Mercadoria ObjM : merc.getListaMercadoria()){
+        for(Mercadoria ObjM : listaMercadoria){
             if( ObjM.getCod() == pCod){
                 System.out.println("Quantide: " + ObjM.getQt_disp());
                 ObjM.setQt_disp(ObjM.getQt_disp() + pQtd);  //Altero a qtde
