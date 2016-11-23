@@ -12,6 +12,7 @@ import Limites.*;
 
 public class ControleMercadoria {
 
+    Mercadoria merc;
     limiteMercadoria limMercadoria;
     ControlePrincipal ctrPrincipal;
 
@@ -28,10 +29,35 @@ public class ControleMercadoria {
         m.getListaMercadoria().add(m);
     }
 
-    public void AlterarQt(int pCod, int pQt) {
-        
+    public void criaJanelaQt() {
+        new limiteEstoque(this);
     }
 
+    public int verificaCodigo(int pCod){
+        Mercadoria ObjM;
+        for(int i=0 ; i< merc.getListaMercadoria().size() ; i++){
+            ObjM =(Mercadoria) merc.getListaMercadoria().get(i);
+            if( ObjM.getCod() == pCod){
+                System.out.println("Encontrou");
+                return 1;
+            }
+        }
+        System.out.println("Nao encontrou");
+        return 0;
+    }
+    
+    public void AlteraQtd(int pCod, int pQtd){
+        Mercadoria ObjM=null;
+        for(int i=0 ; i< ObjM.getListaMercadoria().size() ; i++){
+            ObjM =(Mercadoria) ObjM.getListaMercadoria().get(i);
+            if( ObjM.getCod() == pCod){
+                System.out.println("Quantide: " + ObjM.getQt_disp());
+                ObjM.setQt_disp(ObjM.getQt_disp() + pQtd);  //Altero a qtde
+                System.out.println("Quantide: " + ObjM.getQt_disp());
+            }
+        }
+    }
+    
     public void consultarMercadoria() {
 
     }
