@@ -26,6 +26,6 @@ public class ControleCliente {
     
     public void cadastraCliente(String pNome, String pEmail, String pCpf,String pEndereco){
         Cliente c = new Cliente(pNome,pEmail, pCpf,pEndereco);
-        ListaClient.add(c);
+        listaClient.add(c);
     }
 }
