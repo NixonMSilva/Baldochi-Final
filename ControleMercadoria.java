@@ -25,7 +25,10 @@ public class ControleMercadoria {
         new limiteMercadoria(this);
     }
 
-    public void cadastrarMercadoria(int pCod, int pQt, String pDesc, float pPreco, float pV_venda) {
+    public void cadastrarMercadoria(int pCod, int pQt, String pDesc, float pPreco, float pV_venda) throws Exception {
+        if(pDesc.equals("")){
+            throw new Exception("Descricao vazia!");
+        }
         Mercadoria m = new Mercadoria(pCod, pQt, pDesc, pPreco, pV_venda);
         listaMercadoria.add(m);
     }
@@ -34,27 +37,30 @@ public class ControleMercadoria {
         new limiteEstoque(this);
     }
 
-    public int verificaCodigo(int pCod){        
-        for(Mercadoria ObjM : merc.getListaMercadoria()){           
-            if( ObjM.getCod() == pCod){
-                System.out.println("Encontrou");
-                return 1;
+    public void verificaCodigo(int pCod) throws Exception {
+        boolean achou = false;
+            for (Mercadoria ObjM : listaMercadoria) {
+                if (ObjM.getCod() == pCod) {
+                    achou = true;
+                }
             }
-        }
-        System.out.println("Nao encontrou");
-        return 0;
+            if(achou == false){
+                throw new Exception("Codigo invalido");
+            }
     }
     
-    public void AlteraQtd(int pCod, int pQtd){
-        for(Mercadoria ObjM : merc.getListaMercadoria()){
-            if( ObjM.getCod() == pCod){
+
+    public void AlteraQtd(int pCod, int pQtd) {
+        for (Mercadoria ObjM : listaMercadoria) {
+            System.out.println("entrou aqui");
+            if (ObjM.getCod() == pCod) {
                 System.out.println("Quantide: " + ObjM.getQt_disp());
                 ObjM.setQt_disp(ObjM.getQt_disp() + pQtd);  //Altero a qtde
                 System.out.println("Quantide: " + ObjM.getQt_disp());
             }
         }
     }
-    
+
     public void consultarMercadoria() {
 
     }
