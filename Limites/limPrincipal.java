@@ -8,21 +8,16 @@
 package Limites;
 
 import Controles.ControlePrincipal;
-import Controles.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
-public class limPrincipal extends JFrame implements ActionListener {
+public class limPrincipal extends JFrame implements ActionListener, WindowListener {
 
-    // Elementos de Cadastro
     JPanel painelProduto, painelCliente, painelPrincipal, painelVenda, painelConsulta;
     JButton btnCliente, btnProduto, btnAtualiza, btnVenda, btnConsulta;
-    
-    // Elementos de Consulta
-    
-    
-    // Controle Principal
     ControlePrincipal ctrPrincipal;
     
     public limPrincipal(ControlePrincipal pCtrPrincipal){
@@ -66,6 +61,7 @@ public class limPrincipal extends JFrame implements ActionListener {
         painelPrincipal.add(painelConsulta);
         
         //Frame Principal
+        this.addWindowListener (this);
         this.add(painelPrincipal);
         this.setSize(400,400);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,7 +80,54 @@ public class limPrincipal extends JFrame implements ActionListener {
         } else if(e.getSource().equals(btnVenda)){
             
         } else if(e.getSource().equals(btnConsulta)){
-            
+            ctrPrincipal.getCtrCliente().consultaCliente();
         }
+    }
+
+    @Override
+    public void windowOpened (WindowEvent e)
+    {
+    }
+
+    @Override
+    public void windowClosing (WindowEvent e)
+    {
+        try {
+            ctrPrincipal.finalize ();
+        } catch (Throwable ex) {
+            Logger.getLogger (limPrincipal.class.getName()).log (Level.SEVERE, null, ex);
+        } finally {
+            System.exit (0);
+        }
+    }
+
+    @Override
+    public void windowClosed (WindowEvent e)
+    {
+        
+    }
+
+    @Override
+    public void windowIconified (WindowEvent e)
+    {
+        
+    }
+
+    @Override
+    public void windowDeiconified (WindowEvent e)
+    {
+        
+    }
+
+    @Override
+    public void windowActivated (WindowEvent e)
+    {
+        
+    }
+
+    @Override
+    public void windowDeactivated (WindowEvent e)
+    {
+        
     }
 }

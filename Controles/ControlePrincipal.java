@@ -8,7 +8,6 @@
 package Controles;
 
 import Limites.limPrincipal;
-import Limites.*;
 
 public class ControlePrincipal {
     ControleMercadoria ctrMercadoria;
@@ -17,10 +16,16 @@ public class ControlePrincipal {
     limPrincipal limPrinc;
 
     public ControlePrincipal(){
-        ctrMercadoria = new ControleMercadoria(this);
-        limPrinc = new limPrincipal(this);
-	ctrMercadoria = new ControleMercadoria(this);
-	ctrCliente = new ControleCliente(this);
+        
+        try {
+            limPrinc = new limPrincipal(this);
+            ctrMercadoria = new ControleMercadoria(this);
+            //ctrNota = new ControleNotaFiscal(this);
+            ctrCliente = new ControleCliente(this); 
+        } catch (Exception e) {
+            System.out.println ("Erro");
+        }
+        
     }
     
     public ControleMercadoria getCtrMercadoria() {
@@ -37,6 +42,18 @@ public class ControlePrincipal {
 
     public limPrincipal getLimPrincipal() {
         return limPrinc;
+    }
+    
+    @Override
+    public void finalize() throws Throwable {
+        try {
+            ctrCliente.finalize ();
+        } catch (Exception e) {
+            System.err.println ("Erro ao fechar arquivo!");
+        }
+        finally {
+            super.finalize();
+        }
     }
     
 }
