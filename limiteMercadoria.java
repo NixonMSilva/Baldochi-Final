@@ -10,6 +10,8 @@ package Limites;
 import Controles.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public class limiteMercadoria extends JFrame implements ActionListener {
@@ -27,7 +29,7 @@ public class limiteMercadoria extends JFrame implements ActionListener {
 
         //Paineis
         pPrincipal = new JPanel(new GridLayout(5, 1));
-        
+
         pCod = new JPanel(new FlowLayout());
         pQuant = new JPanel(new FlowLayout());
         pDescricao = new JPanel(new FlowLayout());
@@ -57,7 +59,7 @@ public class limiteMercadoria extends JFrame implements ActionListener {
         //Adicao dos label e textField
         pCod.add(lCod);
         pCod.add(txt_cod);
-        
+
         pQuant.add(lQuant);
         pQuant.add(txt_quant);
 
@@ -88,15 +90,18 @@ public class limiteMercadoria extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            ctrMercadoria.cadastrarMercadoria(Integer.parseInt(txt_cod.getText()),
-                                            Integer.parseInt(txt_quant.getText()),
-                                            txt_descricao.getText(),
-                                            Float.parseFloat(txt_preco.getText()),
-                                            Float.parseFloat(txt_venda.getText()));
-            JOptionPane.showMessageDialog(null, "Mercadoria cadastrada com sucesso!");
-            this.dispose();
-        } catch (Exception exc) {
-            System.out.println("Erro!\n" + exc);
+                ctrMercadoria.cadastrarMercadoria(Integer.parseInt(txt_cod.getText()),
+                        Integer.parseInt(txt_quant.getText()),
+                        txt_descricao.getText(),
+                        Float.parseFloat(txt_preco.getText()),
+                        Float.parseFloat(txt_venda.getText()));
+                JOptionPane.showMessageDialog(null, "Mercadoria cadastrada com sucesso!");
+                this.dispose();
+            
+        } catch (NumberFormatException exc) {
+            JOptionPane.showMessageDialog(this, "Um Campo esta vazio");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
 
