@@ -3,9 +3,9 @@
  * Trabalho Final - 28/11/2016
  * 34154 - Matheus Santos Corrêa
  * 34332 - Pedro Spina Guemureman
- * XXXXX - Nixon Moreira Silva
+ * 33672 - Nixon Moreira Silva
  */
-package entidades;
+package entidade;
 
 import java.util.*;
 

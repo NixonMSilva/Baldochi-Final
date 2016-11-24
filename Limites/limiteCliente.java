@@ -3,10 +3,11 @@
  * Trabalho Final - 28/11/2016
  * 34154 - Matheus Santos Corrêa
  * 34332 - Pedro Spina Guemureman
- * XXXXX - Nixon Moreira Silva
+ * 33672 - Nixon Moreira Silva
  */
 package Limites;
 
+import Controles.ControleCliente;
 import Controles.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,9 +21,9 @@ public class limiteCliente extends JFrame implements ActionListener{
     JLabel lNome, lEndereco, lEmail, lCpf;
     JButton btnCadastra;
     
-    public limiteCliente(ControleCliente cl){
+    public limiteCliente(ControleCliente controle){
         super("Cliente");
-        ctrCliente = cl;
+        this.ctrCliente = controle;
         
         //Paineis
         pPrincipal = new JPanel(new GridLayout(5,1));
@@ -81,7 +82,14 @@ public class limiteCliente extends JFrame implements ActionListener{
     }
 
     public void cadastrarCliente(){
-        
+        try{
+            ctrCliente.concluiCadastroCliente(txt_nome.getText(),txt_email.getText(),txt_cpf.getText(),
+                    txt_endereco.getText());
+            JOptionPane.showMessageDialog(null,"Cliente cadastrado com sucesso!");
+            this.dispose();
+        }catch(Exception exc) {
+            System.out.println("Erro!\n" + exc);
+        }
     }
     
     public void consultarCliente(){
@@ -90,14 +98,8 @@ public class limiteCliente extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try{
-            ctrCliente.cadastraCliente(txt_nome.getText(),txt_email.getText(),txt_cpf.getText(),
-                    txt_endereco.getText());
-            JOptionPane.showMessageDialog(null,"Cliente cadastrado com sucesso!");
-            this.dispose();
-        }catch(Exception exc) {
-            System.out.println("Erro!\n" + exc);
-        }
+        cadastrarCliente ();
+        
     }
     
 }

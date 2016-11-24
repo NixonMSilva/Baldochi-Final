@@ -21,7 +21,7 @@ public class limiteMercadoria extends JFrame implements ActionListener {
     JLabel lCod, lDescricao, lPreco, lVenda, lQuant;
     JButton btnCadastra;
 
-    public limiteMercadoria(ControleMercadoria pCtrMercadoria) {
+    public limiteMercadoria (ControleMercadoria pCtrMercadoria) {
         super("Mercadoria");
         ctrMercadoria = pCtrMercadoria;
 

@@ -7,7 +7,9 @@
  */
 package Controles;
 
-import entidades.*;
+import entidade.Mercadoria;
+import Limites.limiteMercadoria;
+import Limites.limiteEstoque;
 import Limites.*;
 import java.util.ArrayList;
 
@@ -35,24 +37,24 @@ public class ControleMercadoria {
     }
 
     public int verificaCodigo(int pCod){        
-        for(Mercadoria ObjM : merc.getListaMercadoria()){           
-            if( ObjM.getCod() == pCod){
-                System.out.println("Encontrou");
-                return 1;
-            }
-        }
+//        for(Mercadoria ObjM : merc.getListaMercadoria()){           
+//            if( ObjM.getCod() == pCod){
+//                System.out.println("Encontrou");
+//                return 1;
+//            }
+//        }
         System.out.println("Nao encontrou");
         return 0;
     }
     
     public void AlteraQtd(int pCod, int pQtd){
-        for(Mercadoria ObjM : merc.getListaMercadoria()){
-            if( ObjM.getCod() == pCod){
-                System.out.println("Quantide: " + ObjM.getQt_disp());
-                ObjM.setQt_disp(ObjM.getQt_disp() + pQtd);  //Altero a qtde
-                System.out.println("Quantide: " + ObjM.getQt_disp());
-            }
-        }
+//        for(Mercadoria ObjM : merc.getListaMercadoria()){
+//            if( ObjM.getCod() == pCod){
+//                System.out.println("Quantide: " + ObjM.getQt_disp());
+//                ObjM.setQt_disp(ObjM.getQt_disp() + pQtd);  //Altero a qtde
+//                System.out.println("Quantide: " + ObjM.getQt_disp());
+//            }
+//        }
     }
     
     public void consultarMercadoria() {

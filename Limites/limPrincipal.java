@@ -3,10 +3,11 @@
  * Trabalho Final - 28/11/2016
  * 34154 - Matheus Santos Corrêa
  * 34332 - Pedro Spina Guemureman
- * XXXXX - Nixon Moreira Silva
+ * 33672 - Nixon Moreira Silva
  */
 package Limites;
 
+import Controles.ControlePrincipal;
 import Controles.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,8 +15,14 @@ import javax.swing.*;
 
 public class limPrincipal extends JFrame implements ActionListener {
 
+    // Elementos de Cadastro
     JPanel painelProduto, painelCliente, painelPrincipal, painelVenda, painelConsulta;
     JButton btnCliente, btnProduto, btnAtualiza, btnVenda, btnConsulta;
+    
+    // Elementos de Consulta
+    
+    
+    // Controle Principal
     ControlePrincipal ctrPrincipal;
     
     public limPrincipal(ControlePrincipal pCtrPrincipal){
@@ -71,7 +78,7 @@ public class limPrincipal extends JFrame implements ActionListener {
         if(e.getSource().equals(btnProduto)){
             ctrPrincipal.getCtrMercadoria().criaJanelaMercadoria();
         } else if(e.getSource().equals(btnCliente)){
-            ctrPrincipal.getCtrCliente().criaJanelaCliente();
+            ctrPrincipal.getCtrCliente().cadastraCliente();
         } else if(e.getSource().equals(btnAtualiza)){
             ctrPrincipal.getCtrMercadoria().criaJanelaQt();
         } else if(e.getSource().equals(btnVenda)){
