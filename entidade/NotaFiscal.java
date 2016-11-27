@@ -25,6 +25,16 @@ public class NotaFiscal implements Serializable {
         ano = pAno;
     }
 
+    public ArrayList<Integer> getProdutos ()
+    {
+        return Produtos;
+    }
+
+    public void setProdutos (ArrayList<Integer> Produtos)
+    {
+        this.Produtos = Produtos;
+    }
+    
     public int getNroNota() {
         return nroNota;
     }

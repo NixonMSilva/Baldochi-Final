@@ -9,7 +9,7 @@
 package Controles;
 
 import Limites.*;
-import entidade.NotaFiscal;
+import entidade.*;
 import java.util.ArrayList;
 
 public class ControleNotaFiscal {
@@ -21,11 +21,16 @@ public class ControleNotaFiscal {
     NotaFiscal notaObj;
     
     public ControleNotaFiscal (ControlePrincipal cp) {
-        desserializaNota ();
+        // desserializaNota ();
         ctrPrincipal = cp;
     }
     
-    
+    public void emitirNota () {
+        ArrayList<Cliente> vetClientes = ctrPrincipal.getCtrCliente ().getListaCliente ();
+        ArrayList<Mercadoria> vetMercadorias = ctrPrincipal.getCtrMercadoria ().getListaMercadoria ();
+        limNota = new limiteNotaFiscal (this, 0, vetClientes, vetMercadorias);
+        
+    }
 
     private void desserializaNota ()
     {

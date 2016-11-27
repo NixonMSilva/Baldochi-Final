@@ -26,7 +26,7 @@ public class limiteMercadoria extends JFrame implements ActionListener {
 
     public limiteMercadoria(ControleMercadoria pCtrMercadoria, int operacao) {
         super("Mercadoria");
-        ctrMercadoria = pCtrMercadoria;
+        this.ctrMercadoria = pCtrMercadoria;
         
         //botao
         btnCadastra = new JButton("Cadastrar");
@@ -206,8 +206,6 @@ public class limiteMercadoria extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog (null, e.getMessage ());
             }
         }
-        
-        
     }
 
 }

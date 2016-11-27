@@ -127,4 +127,8 @@ public class ControleMercadoria {
             super.finalize ();
         }
     }
+    
+    public ArrayList<Mercadoria> getListaMercadoria () {
+        return listaMercadoria;
+    }
 }

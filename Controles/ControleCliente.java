@@ -91,4 +91,8 @@ public class ControleCliente
             super.finalize ();
         }
     }
+    
+    public ArrayList<Cliente> getListaCliente () {
+        return listaCliente;
+    }
 }

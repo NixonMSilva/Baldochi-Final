@@ -21,7 +21,7 @@ public class ControlePrincipal {
         try {
             limPrinc = new limPrincipal(this);
             ctrMercadoria = new ControleMercadoria(this);
-            //ctrNota = new ControleNotaFiscal(this);
+            ctrNota = new ControleNotaFiscal(this);
             ctrCliente = new ControleCliente(this); 
         } catch (Exception e) {
             System.out.println ("Erro");
