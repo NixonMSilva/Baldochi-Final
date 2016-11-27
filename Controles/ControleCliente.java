@@ -95,4 +95,16 @@ public class ControleCliente
     public ArrayList<Cliente> getListaCliente () {
         return listaCliente;
     }
+    
+    public boolean validaCPF (String pCPF)
+    {
+        for (Cliente c: listaCliente)
+        {
+            if (pCPF.equals(c.getCpf ()))
+            {
+                return true;
+            }    
+        }
+        return false;
+    }
 }

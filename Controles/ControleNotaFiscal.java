@@ -26,15 +26,43 @@ public class ControleNotaFiscal {
     }
     
     public void emitirNota () {
-        ArrayList<Cliente> vetClientes = ctrPrincipal.getCtrCliente ().getListaCliente ();
-        ArrayList<Mercadoria> vetMercadorias = ctrPrincipal.getCtrMercadoria ().getListaMercadoria ();
-        limNota = new limiteNotaFiscal (this, 0, vetClientes, vetMercadorias);
+        limNota = new limiteNotaFiscal (this, 0);
         
     }
 
     private void desserializaNota ()
     {
         throw new UnsupportedOperationException ("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean validaCodigo (int pCodigo)
+    {
+        return ctrPrincipal.getCtrMercadoria ().validaCodigo (pCodigo);
+    }
+    
+    public boolean validaQtd (int pCodigo, int pQtd)
+    {
+        return ctrPrincipal.getCtrMercadoria ().validaQtd (pCodigo, pQtd);
+    }
+    
+    public boolean validaCPF (String pCPF)
+    {
+        return ctrPrincipal.getCtrCliente ().validaCPF(pCPF);
+    }
+    
+    public float getPreco (int pCodigo)
+    {
+        return ctrPrincipal.getCtrMercadoria ().getPreco (pCodigo);
+    }
+    
+    public float getPrecoQtd (int pCodigo, int pQtd)
+    {
+        return ctrPrincipal.getCtrMercadoria ().getPrecoQtd (pCodigo, pQtd);
+    }
+
+    public String getDec (int pCodigo)
+    {
+        return ctrPrincipal.getCtrMercadoria ().getDesc (pCodigo);
     }
 }
 

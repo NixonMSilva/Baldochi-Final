@@ -131,4 +131,65 @@ public class ControleMercadoria {
     public ArrayList<Mercadoria> getListaMercadoria () {
         return listaMercadoria;
     }
+    
+    public boolean validaCodigo (int pCodigo) 
+    {
+        for (Mercadoria m : listaMercadoria) 
+        {
+            if (m.getCod () == pCodigo)
+                return true;
+        }
+        return false;
+    }
+    
+    public boolean validaQtd (int pCodigo, int pQtd) 
+    {
+        for (Mercadoria m : listaMercadoria) 
+        {
+            if (m.getCod () == pCodigo)
+            {
+                if (m.getQt_disp () >= pQtd)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        return false;
+    }
+    
+    public float getPreco (int pCodigo)
+    {
+        for (Mercadoria m : listaMercadoria)
+        {
+            if (m.getCod () == pCodigo)
+            {
+                return m.getValor_venda ();
+            }
+        }
+        return 0;
+    }
+    
+    public float getPrecoQtd (int pCodigo, int pQtd)
+    {
+        for (Mercadoria m : listaMercadoria)
+        {
+            if (m.getCod () == pCodigo)
+            {
+                return m.getValor_venda () * pQtd;
+            }
+        }
+        return 0;
+    }
+    
+    public String getDesc (int pCodigo)
+    {
+        for (Mercadoria m : listaMercadoria)
+        {
+            if (m.getCod () == pCodigo)
+            {
+                return m.getDescricao ();
+            }
+        }
+        return "";
+    }
 }

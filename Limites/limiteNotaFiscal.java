@@ -3,7 +3,7 @@
  * Trabalho Final - 28/11/2016
  * 34154 - Matheus Santos Corrêa
  * 34332 - Pedro Spina Guemureman
- * XXXXX - Nixon Moreira Silva
+ * 33672 - Nixon Moreira Silva
  */
 package Limites;
 
@@ -12,9 +12,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import Controles.ControleNotaFiscal;
 import entidade.*;
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.PopupMenu;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -22,10 +22,14 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
 
     ControleNotaFiscal ctrNota;
     
-    String[] clientes;
-    String[] mercadorias;
+    String cliente;
+    int[] codigo;
+    int[] qtd;
+    int[] validade;
+    float[] preco;
+    float[] precoXqtd;
     
-    JPanel pPrincipal, pCliente, pMercadoria, pPreco, pData;
+    JPanel pPrincipal, pCliente, pMercadoria, pPreco, pData, pBotoes;
     JLabel lCliente, lPreco, lData;
     JTextField txtPreco, txtCPFCliente, txtData;
     
@@ -35,15 +39,17 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     
     JPanel[] pGrupo;
     
-    JButton btnConfirma;
+    JButton btnConfirma, btnAtualizar;
     
-    public limiteNotaFiscal (ControleNotaFiscal cn, int operacao, ArrayList<Cliente> vc, ArrayList<Mercadoria> vm) {
+    public limiteNotaFiscal (ControleNotaFiscal cn, int operacao) {
         super ("Emissão de Nota Fiscal");
         this.ctrNota = cn;
-        vetoresNormaliza (vc, vm);
         
         btnConfirma = new JButton ("Confirma");
         btnConfirma.addActionListener (this);
+        btnAtualizar = new JButton ("Atualizar Preço");
+        btnAtualizar.addActionListener (this);
+        
         
         if (operacao == 0) {
             // Painéis
@@ -54,6 +60,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             pMercadoria = new JPanel (new GridLayout(10, 1));
             pGrupo = new JPanel[10];
             pPreco = new JPanel (new FlowLayout());
+            pBotoes = new JPanel (new FlowLayout());
             
             // Labels
             lCliente = new JLabel ("CPF do Cliente:");
@@ -65,13 +72,13 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             lExists = new JLabel[10];
             for (int i = 0; i < 10; ++i)
             {
-                lItem[i] = new JLabel ("Cod.");
+                String auxLabel = (i + 1) + ".  Cod.";
+                lItem[i] = new JLabel (auxLabel);
                 lItemQtd[i] = new JLabel ("Qtd.");
                 lPrecoUnit[i] = new JLabel ("Preço Unit.");
                 lExists[i] = new JLabel ("(VAZIO)");
             }
             
-                
             // TextField
             txtCPFCliente = new JTextField (15);
             txtData = new JTextField (15);
@@ -94,6 +101,10 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             // Adição ao painel pData
             pData.add (lData);
             pData.add (txtData);
+            
+            // Adição ao painel pBotoes
+            pBotoes.add (btnConfirma);
+            pBotoes.add (btnAtualizar);
             
             // Adição aos paineis sub-pMercadoria 
             
@@ -120,18 +131,18 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             pPrincipal.add (pData);
             pPrincipal.add (pMercadoria);
             pPrincipal.add (pPreco);
+            pPrincipal.add (pBotoes);
             
         }
         this.add (pPrincipal);
-        this.setSize (800, 400);
-        // this.setResizable (false);
+        this.setSize (650, 450);
+        this.setResizable (false);
         this.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo (null);
         this.revalidate ();
         this.repaint ();
         this.setVisible (true);
     }
-    
     
     public void emitirNota ()
     {
@@ -143,42 +154,179 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         
     }
     
-    public void consultarNota(){
+    public void consultarNota()
+    {
         
     }
     
+    public boolean validaCliente () 
+    {
+        return false;
+    }
+    
+    public boolean validaCodigo (int pCodigo) 
+    {
+        return ctrNota.validaCodigo (pCodigo);
+    }
+    
+    public boolean validaQtd (int pCodigo, int pQtd)
+    {
+        return ctrNota.validaQtd (pCodigo, pQtd);
+    }
+    
+    public float getPreco (int pCodigo)
+    {
+        return ctrNota.getPreco (pCodigo);
+    }
+    
+    public float getPrecoQtd (int pCodigo, int pQtd)
+    {
+        return ctrNota.getPrecoQtd (pCodigo, pQtd);
+    }
+    
+    private String getDesc (int pCodigo)
+    {
+        return ctrNota.getDec (pCodigo);
+    }
+    
+    public boolean validaNota ()
+    {
+        codigo = new int[10];
+        qtd = new int[10];
+        preco = new float[10];
+        precoXqtd = new float[10];
+        validade = new int[10];
+        Boolean valido = true;
+        
+        if (!validaCPF(txtCPFCliente.getText ()))
+        {
+            JOptionPane.showMessageDialog (null, "CPF não cadastrado!");
+            return false;
+        }
+        vetoresAtualiza ();
+        for (int i = 0; i < 10; ++i)
+        {
+            
+            if (validade[i] > 0)
+            {
+                valido = false;
+                lExists[i].setText ("Erro!");
+            }
+            else
+            {
+                lExists[i].setText (getDesc(codigo[i]));
+                txtPrecoUnit[i].setText (String.valueOf (preco[i]));
+            }
+        }
+        txtPreco.setText (String.valueOf (getPrecoTotal()));
+        return valido;
+    }
+    
+    public boolean validaCPF (String cpf)
+    {
+        return ctrNota.validaCPF (cpf);
+    }
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void actionPerformed(ActionEvent e) 
+    {
+        String erro = "";
+        if (e.getSource () == btnConfirma) 
+        {
+            
+            if (!validaNota ())
+            {
+                for (int i = 0; i < 10; ++i)
+                {
+                    if (validade[i] == 1)
+                        erro += "Erro com o produto " + i + ": Código inexistente\n";
+                    else if (validade[i] == 2)
+                        erro += "Erro com o produto " + i + ": Quantidade excede aquela do estoque\n";
+                    else if (validade[i] == 3)
+                        erro += "Erro com o produto " + i + ": Campo de quantidade vazio\n";
+                    else if (validade[i] == 4)
+                        erro += "Erro com o produto " + i + ": Campo de código vazio\n";
+                }
+                JOptionPane.showMessageDialog (null, erro);
+            }
+            if (!erro.isEmpty ())
+                    JOptionPane.showMessageDialog (null, erro);
+        }
+        else if (e.getSource () == btnAtualizar)
+        {
+            if (!validaNota ())
+            {
+                for (int i = 0; i < 10; ++i)
+                {
+                    if (validade[i] == 1)
+                        erro += "Erro com o produto " + (i + 1) + ": Código inexistente\n";
+                    else if (validade[i] == 2)
+                        erro += "Erro com o produto " + (i + 1) + ": Quantidade excede aquela do estoque\n";
+                    else if (validade[i] == 3)
+                        erro += "Erro com o produto " + (i + 1) + ": Campo de quantidade vazio\n";
+                    else if (validade[i] == 4)
+                        erro += "Erro com o produto " + (i + 1) + ": Campo de código vazio\n";
+                }
+                if (!erro.isEmpty ())
+                    JOptionPane.showMessageDialog (null, erro);
+            }
+        }
+    }
+    
+    private float getPrecoTotal ()
+    {
+        float soma = 0;
+        for (int i = 0; i < 10; ++i)
+        {
+            soma += precoXqtd[i];
+        }
+        return soma;
     }
 
-    private void vetoresNormaliza (ArrayList<Cliente> vc, ArrayList<Mercadoria> vm)
+    private void vetoresAtualiza ()
     {
-        clientes = new String[vc.size ()];
-        mercadorias = new String[vm.size ()];
-        for (int i = 0; i < vc.size(); ++i)
+        int codInteiro, qtdInteiro;
+        for (int k = 0; k < 10; ++k) 
         {
-            Cliente c_aux = vc.get (i);
-            clientes[i] = c_aux.getNome ();
+            String codFieldAux = txtCod[k].getText ();
+            String qtdFieldAux = txtQtd[k].getText ();
+            
+            if ((!codFieldAux.isEmpty ()) && (!qtdFieldAux.isEmpty ()))
+            {
+                codInteiro = Integer.parseInt (codFieldAux);
+                qtdInteiro = Integer.parseInt (qtdFieldAux);
+                if (validaCodigo (codInteiro)) 
+                {
+                    if (validaQtd (codInteiro, qtdInteiro))
+                    {    
+                        validade[k] = 0;
+                        preco[k] = getPreco (codInteiro);
+                        precoXqtd[k] = getPrecoQtd (codInteiro, qtdInteiro);
+                        codigo[k] = codInteiro;
+                        qtd[k] = qtdInteiro;
+                        System.out.println ("Oi");
+                    }
+                    else
+                    {
+                        validade[k] = 2;
+                        precoXqtd[k] = 0;
+                    }
+                }
+                else
+                    validade[k] = 1;
+            }
+            else if ((codFieldAux.isEmpty()) && (!qtdFieldAux.isEmpty ()))
+            {
+                validade[k] = 4;
+            }
+            else if ((!codFieldAux.isEmpty()) && (qtdFieldAux.isEmpty ()))
+            {
+                validade[k] = 3;
+            }
+            else
+            {
+                validade[k] = 0;
+            }
         }
-        for (int i = 0; i < vm.size(); ++i)
-        {
-            Mercadoria m_aux = vm.get (i);
-            mercadorias[i] = m_aux.getDescricao ();
-        }
-        // testa_vetores ();
     }
-
-    private void testa_vetores ()
-    {
-        System.out.println ("CLIENTES:");
-        for (int i = 0; i < clientes.length; ++i)
-            System.out.println (clientes[i]);
-        System.out.println ("\nMERCADORIAS:");
-        for (int i = 0; i < mercadorias.length; ++i)
-            System.out.println (mercadorias[i]);
-    }
-    
-    
-    
 }
