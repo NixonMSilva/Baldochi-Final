@@ -5,6 +5,7 @@
  * 34332 - Pedro Spina Guemureman
  * 33672 - Nixon Moreira Silva
  */
+
 package Controles;
 
 import Limites.limPrincipal;
@@ -48,6 +49,7 @@ public class ControlePrincipal {
     public void finalize() throws Throwable {
         try {
             ctrCliente.finalize ();
+            ctrMercadoria.finalize ();
         } catch (Exception e) {
             System.err.println ("Erro ao fechar arquivo!");
         }

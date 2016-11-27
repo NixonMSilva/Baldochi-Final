@@ -5,15 +5,18 @@
  * 34332 - Pedro Spina Guemureman
  * XXXXX - Nixon Moreira Silva
  */
-package entidades;
+package entidade;
 
 import java.util.*;
+import java.io.Serializable;
 
-public class Mercadoria {
+public class Mercadoria implements Serializable {
 
     private int cod, qt_disp;
     private String descricao;
     private float preco, valor_venda;
+    
+    private int qt_vendida;
 
     public Mercadoria(int pCod, int pQt, String pDesc, float pPreco, float pV_venda) {
         this.cod = pCod;
@@ -21,6 +24,7 @@ public class Mercadoria {
         this.qt_disp = pQt;
         this.preco = pPreco;
         this.valor_venda = pV_venda;
+        this.qt_vendida = 0;
     }
 
     public int getCod() {
@@ -63,5 +67,11 @@ public class Mercadoria {
         this.valor_venda = valor_venda;
     }
 
+    public int get_qt_vendida () {
+        return qt_vendida;
+    }
     
+    public void add_vendido () {
+        this.qt_vendida = this.qt_vendida + 1;
+    }
 }

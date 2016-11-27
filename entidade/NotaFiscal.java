@@ -3,7 +3,7 @@
  * Trabalho Final - 28/11/2016
  * 34154 - Matheus Santos Corrêa
  * 34332 - Pedro Spina Guemureman
- * XXXXX - Nixon Moreira Silva
+ * 33672 - Nixon Moreira Silva
  */
 package entidade;
 
@@ -36,8 +36,12 @@ public class NotaFiscal {
         return cancelada;
     }
 
-    public void setCancelada(boolean cancelada) {
-        this.cancelada = cancelada;
+    public void setCancelada() {
+        this.cancelada = false;
+    }
+    
+    public void setCorrente(){
+        this.cancelada = true;
     }
 
     public String getDia() {

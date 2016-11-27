@@ -85,7 +85,7 @@ public class ControleCliente
         try {
             serializaCliente ();
         } catch (Exception e) {
-            System.out.println ("Lol");
+            System.out.println ("Erro na serialização de Clientes");
         } finally
         {
             super.finalize ();

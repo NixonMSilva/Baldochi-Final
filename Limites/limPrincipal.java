@@ -17,7 +17,7 @@ import javax.swing.*;
 public class limPrincipal extends JFrame implements ActionListener, WindowListener {
 
     JPanel painelProduto, painelCliente, painelPrincipal, painelVenda, painelConsulta;
-    JButton btnCliente, btnProduto, btnAtualiza, btnVenda, btnConsulta;
+    JButton btnCliente, btnProduto, btnAtualiza, btnVenda, btnConsultaCliente, btnConsultaEstoque;
     ControlePrincipal ctrPrincipal;
     
     public limPrincipal(ControlePrincipal pCtrPrincipal){
@@ -38,21 +38,24 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         btnCliente = new JButton("Cadastra Cliente");
         btnAtualiza = new JButton("Atualiza Estoque");
         btnVenda = new JButton("Vender Produto");
-        btnConsulta = new JButton("Consultar");
+        btnConsultaCliente = new JButton("Consultar Cliente");
+        btnConsultaEstoque = new JButton("Consultar Estoque");
     
         //adicao dos ActionListener
         btnProduto.addActionListener(this);
         btnCliente.addActionListener(this);
         btnAtualiza.addActionListener(this);
         btnVenda.addActionListener(this);
-        btnConsulta.addActionListener(this);
+        btnConsultaCliente.addActionListener(this);
+        btnConsultaEstoque.addActionListener(this);
         
         //adicao dos botoes aos paineis respectivos
         painelProduto.add(btnProduto);
         painelProduto.add(btnAtualiza);
         painelCliente.add(btnCliente);
         painelVenda.add(btnVenda);
-        painelConsulta.add(btnConsulta);
+        painelConsulta.add(btnConsultaCliente);
+        painelConsulta.add(btnConsultaEstoque);
         
         //PAINEL PRINCIPAL
         painelPrincipal.add(painelProduto);
@@ -72,15 +75,17 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(btnProduto)){
-            ctrPrincipal.getCtrMercadoria().criaJanelaMercadoria();
+            ctrPrincipal.getCtrMercadoria().cadastrarMercadoria();
         } else if(e.getSource().equals(btnCliente)){
             ctrPrincipal.getCtrCliente().cadastraCliente();
         } else if(e.getSource().equals(btnAtualiza)){
             ctrPrincipal.getCtrMercadoria().criaJanelaQt();
         } else if(e.getSource().equals(btnVenda)){
             
-        } else if(e.getSource().equals(btnConsulta)){
+        } else if(e.getSource().equals(btnConsultaCliente)){
             ctrPrincipal.getCtrCliente().consultaCliente();
+        } else if(e.getSource().equals(btnConsultaEstoque)){
+            ctrPrincipal.getCtrMercadoria().consultarMercadoria();
         }
     }
 
