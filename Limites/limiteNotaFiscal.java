@@ -5,17 +5,16 @@
  * 34332 - Pedro Spina Guemureman
  * 33672 - Nixon Moreira Silva
  */
+
 package Limites;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import Controles.ControleNotaFiscal;
-import entidade.*;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.PopupMenu;
-import java.util.ArrayList;
+
 import javax.swing.*;
 
 public class limiteNotaFiscal extends JFrame implements ActionListener {
@@ -23,6 +22,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     ControleNotaFiscal ctrNota;
     
     String cliente;
+    
     int[] codigo;
     int[] qtd;
     int[] validade;
@@ -41,15 +41,14 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     
     JButton btnConfirma, btnAtualizar;
     
-    public limiteNotaFiscal (ControleNotaFiscal cn, int operacao) {
+    public limiteNotaFiscal (ControleNotaFiscal cn, int operacao) 
+    {
         super ("Emissão de Nota Fiscal");
         this.ctrNota = cn;
-        
         btnConfirma = new JButton ("Confirma");
         btnConfirma.addActionListener (this);
         btnAtualizar = new JButton ("Atualizar Preço");
         btnAtualizar.addActionListener (this);
-        
         
         if (operacao == 0) {
             // Painéis
@@ -144,9 +143,9 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         this.setVisible (true);
     }
     
-    public void emitirNota ()
+    public void emitirNota (String pCPF, String pData)
     {
-        
+        ctrNota.concluirEmissaoNota (pCPF, pData, codigo, qtd, validade);
     }
     
     public void cancelarNota ()
@@ -159,37 +158,11 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         
     }
     
-    public boolean validaCliente () 
-    {
-        return false;
-    }
+    // !----------------------------------------------! //
+    // VALIDAÇÕES                                       //
+    // !----------------------------------------------! //
     
-    public boolean validaCodigo (int pCodigo) 
-    {
-        return ctrNota.validaCodigo (pCodigo);
-    }
-    
-    public boolean validaQtd (int pCodigo, int pQtd)
-    {
-        return ctrNota.validaQtd (pCodigo, pQtd);
-    }
-    
-    public float getPreco (int pCodigo)
-    {
-        return ctrNota.getPreco (pCodigo);
-    }
-    
-    public float getPrecoQtd (int pCodigo, int pQtd)
-    {
-        return ctrNota.getPrecoQtd (pCodigo, pQtd);
-    }
-    
-    private String getDesc (int pCodigo)
-    {
-        return ctrNota.getDec (pCodigo);
-    }
-    
-    public boolean validaNota ()
+    public boolean validaNota (String pCPF, String pData)
     {
         codigo = new int[10];
         qtd = new int[10];
@@ -198,9 +171,14 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         validade = new int[10];
         Boolean valido = true;
         
-        if (!validaCPF(txtCPFCliente.getText ()))
+        if (!ctrNota.validaCPF (pCPF))
         {
             JOptionPane.showMessageDialog (null, "CPF não cadastrado!");
+            return false;
+        }
+        if (!ctrNota.validaData (pData, "dd/MM/yyyy"))
+        {
+            JOptionPane.showMessageDialog (null, "Data inválida!");
             return false;
         }
         vetoresAtualiza ();
@@ -214,64 +192,27 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             }
             else
             {
-                lExists[i].setText (getDesc(codigo[i]));
-                txtPrecoUnit[i].setText (String.valueOf (preco[i]));
+                lExists[i].setText (ctrNota.getDesc(codigo[i]));
+                txtPrecoUnit[i].setText (String.valueOf (ctrNota.getPreco (codigo[i])));
             }
         }
         txtPreco.setText (String.valueOf (getPrecoTotal()));
         return valido;
     }
     
-    public boolean validaCPF (String cpf)
+    public boolean validaCodigo (int pCodigo) 
     {
-        return ctrNota.validaCPF (cpf);
+        return ctrNota.validaCodigo (pCodigo);
     }
     
-    @Override
-    public void actionPerformed(ActionEvent e) 
+    public boolean validaQtd (int pCodigo, int pQtd)
     {
-        String erro = "";
-        if (e.getSource () == btnConfirma) 
-        {
-            
-            if (!validaNota ())
-            {
-                for (int i = 0; i < 10; ++i)
-                {
-                    if (validade[i] == 1)
-                        erro += "Erro com o produto " + i + ": Código inexistente\n";
-                    else if (validade[i] == 2)
-                        erro += "Erro com o produto " + i + ": Quantidade excede aquela do estoque\n";
-                    else if (validade[i] == 3)
-                        erro += "Erro com o produto " + i + ": Campo de quantidade vazio\n";
-                    else if (validade[i] == 4)
-                        erro += "Erro com o produto " + i + ": Campo de código vazio\n";
-                }
-                JOptionPane.showMessageDialog (null, erro);
-            }
-            if (!erro.isEmpty ())
-                    JOptionPane.showMessageDialog (null, erro);
-        }
-        else if (e.getSource () == btnAtualizar)
-        {
-            if (!validaNota ())
-            {
-                for (int i = 0; i < 10; ++i)
-                {
-                    if (validade[i] == 1)
-                        erro += "Erro com o produto " + (i + 1) + ": Código inexistente\n";
-                    else if (validade[i] == 2)
-                        erro += "Erro com o produto " + (i + 1) + ": Quantidade excede aquela do estoque\n";
-                    else if (validade[i] == 3)
-                        erro += "Erro com o produto " + (i + 1) + ": Campo de quantidade vazio\n";
-                    else if (validade[i] == 4)
-                        erro += "Erro com o produto " + (i + 1) + ": Campo de código vazio\n";
-                }
-                if (!erro.isEmpty ())
-                    JOptionPane.showMessageDialog (null, erro);
-            }
-        }
-    }
+        return ctrNota.validaQtd (pCodigo, pQtd);
+    }   
+    
+    // !----------------------------------------------! //
+    // GETTERS                                          //
+    // !----------------------------------------------! //
     
     private float getPrecoTotal ()
     {
@@ -300,11 +241,10 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
                     if (validaQtd (codInteiro, qtdInteiro))
                     {    
                         validade[k] = 0;
-                        preco[k] = getPreco (codInteiro);
-                        precoXqtd[k] = getPrecoQtd (codInteiro, qtdInteiro);
+                        preco[k] = ctrNota.getPreco (codInteiro);
+                        precoXqtd[k] = ctrNota.getPrecoQtd (codInteiro, qtdInteiro);
                         codigo[k] = codInteiro;
                         qtd[k] = qtdInteiro;
-                        System.out.println ("Oi");
                     }
                     else
                     {
@@ -325,8 +265,40 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             }
             else
             {
-                validade[k] = 0;
+                validade[k] = -1;
             }
+        }
+    }
+    
+    // !----------------------------------------------! //
+    // ACTION PERFORMED                                 //
+    // !----------------------------------------------! //
+    
+    @Override
+    public void actionPerformed (ActionEvent e) 
+    {
+        String erro = "";
+        String pCPF = txtCPFCliente.getText ();
+        String pData = txtData.getText ();
+        if (!validaNota (pCPF, pData))
+            {
+                for (int i = 0; i < 10; ++i)
+                {
+                    if (validade[i] == 1)
+                        erro += "Erro com o produto " + i + ": Código inexistente\n";
+                    else if (validade[i] == 2)
+                        erro += "Erro com o produto " + i + ": Quantidade excede aquela do estoque ou valores inválidos\n";
+                    else if (validade[i] == 3)
+                        erro += "Erro com o produto " + i + ": Campo de quantidade vazio\n";
+                    else if (validade[i] == 4)
+                        erro += "Erro com o produto " + i + ": Campo de código vazio\n";
+                }
+            }
+            if (!erro.isEmpty ())
+                    JOptionPane.showMessageDialog (null, erro);
+        if (e.getSource () == btnConfirma) 
+        {
+            emitirNota (pCPF, pData);
         }
     }
 }

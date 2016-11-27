@@ -12,27 +12,35 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class NotaFiscal implements Serializable {
-    private ArrayList<Integer> Produtos = new ArrayList<>();
+    private ArrayList<Integer> vendas = new ArrayList<Integer>();
     private int  nroNota;
     private boolean cancelada;
-    private String dia,mes,ano;
+    private String cpf;
+    private Date data;
     
-    public NotaFiscal(int pNroNota, boolean pCancelada, String pDia, String pMes, String pAno){
-        nroNota = pNroNota;
-        cancelada = pCancelada;
-        dia = pDia;
-        mes = pMes;
-        ano = pAno;
+    public NotaFiscal(int nroNota, String cpf, boolean cancelada, Date data){
+        this.nroNota = nroNota;
+        this.cpf = cpf;
+        this.cancelada = cancelada;
+        this.data = data;
+    }
+    
+    public NotaFiscal(int nroNota, String cpf, boolean cancelada, Date data, int[] codigo, int[] qtd)
+    {
+        this.nroNota = nroNota;
+        this.cpf = cpf;
+        this.cancelada = cancelada;
+        this.data = data;
     }
 
     public ArrayList<Integer> getProdutos ()
     {
-        return Produtos;
+        return vendas;
     }
 
-    public void setProdutos (ArrayList<Integer> Produtos)
+    public void setProdutos (ArrayList<Integer> vendas)
     {
-        this.Produtos = Produtos;
+        this.vendas = vendas;
     }
     
     public int getNroNota() {
@@ -54,31 +62,5 @@ public class NotaFiscal implements Serializable {
     public void setCorrente(){
         this.cancelada = true;
     }
-
-    public String getDia() {
-        return dia;
-    }
-
-    public void setDia(String dia) {
-        this.dia = dia;
-    }
-
-    public String getMes() {
-        return mes;
-    }
-
-    public void setMes(String mes) {
-        this.mes = mes;
-    }
-
-    public String getAno() {
-        return ano;
-    }
-
-    public void setAno(String ano) {
-        this.ano = ano;
-    }
-    
-    
     
 }
