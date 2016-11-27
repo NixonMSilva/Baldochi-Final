@@ -5,6 +5,7 @@
  * 34332 - Pedro Spina Guemureman
  * 33672 - Nixon Moreira Silva
  */
+
 package Controles;
 
 import entidade.*;
@@ -43,10 +44,6 @@ public class ControleMercadoria {
         listaMercadoria.add(m);
     }
 
-    public void criaJanelaQt() {
-        // new limiteEstoque(this);
-    }
-
     public void verificaCodigo(int pCod) throws Exception {
         boolean achou = false;
             for (Mercadoria ObjM : listaMercadoria) {
@@ -59,15 +56,26 @@ public class ControleMercadoria {
             }
     }
     
-    public void AlteraQtd(int pCod, int pQtd) {
+    public void alteraQtd () {
+        new limiteMercadoria (this, 2); 
+    }
+    
+    public String concluiAlteraQtd (int pCod, int pQtd) throws Exception {
+        int antes, depois;
+        String resposta = "";
         for (Mercadoria ObjM : listaMercadoria) {
             System.out.println("entrou aqui");
             if (ObjM.getCod() == pCod) {
+                antes = ObjM.getQt_disp ();
                 System.out.println("Quantide: " + ObjM.getQt_disp());
                 ObjM.setQt_disp(ObjM.getQt_disp() + pQtd);  //Altero a qtde
                 System.out.println("Quantide: " + ObjM.getQt_disp());
+                depois = ObjM.getQt_disp ();
+                resposta = "Quantidade do produto " + ObjM.getDescricao () + " alterada de " + antes + " para " + depois + "!";
+                return resposta;
             }
         }
+        throw new Exception ("Código de mercadoria inexistente!");
     }
 
     public void consultarMercadoria() {

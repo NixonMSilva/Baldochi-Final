@@ -7,10 +7,11 @@
  */
 package entidade;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class NotaFiscal {
+public class NotaFiscal implements Serializable {
     private ArrayList<Integer> Produtos = new ArrayList<>();
     private int  nroNota;
     private boolean cancelada;

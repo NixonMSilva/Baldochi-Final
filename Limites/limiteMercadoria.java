@@ -21,7 +21,7 @@ public class limiteMercadoria extends JFrame implements ActionListener {
     JPanel pCod, pDescricao, pPreco, pVenda, pBtn, pPrincipal, pQuant, pResult;
     JTextField txt_cod, txt_descricao, txt_preco, txt_venda, txt_quant;
     JLabel lCod, lDescricao, lPreco, lVenda, lQuant;
-    JButton btnCadastra, btnConsulta, btnFechar;
+    JButton btnCadastra, btnConsulta, btnFechar, btnAtualiza;
     JTextArea txt_resultados;
 
     public limiteMercadoria(ControleMercadoria pCtrMercadoria, int operacao) {
@@ -35,6 +35,8 @@ public class limiteMercadoria extends JFrame implements ActionListener {
         btnFechar.addActionListener(this);
         btnConsulta = new JButton("Consulta");
         btnConsulta.addActionListener(this);
+        btnAtualiza = new JButton ("Atualizar");
+        btnAtualiza.addActionListener(this);
         
         if (operacao == 0)
         {
@@ -103,9 +105,35 @@ public class limiteMercadoria extends JFrame implements ActionListener {
             pCod.add(txt_cod);
             pResult.add(txt_resultados);
             
-            pPrincipal.add(pCod);
+            pPrincipal.add (pCod);
             pPrincipal.add (pResult);
-            pPrincipal.add(pBtn);
+            pPrincipal.add (pBtn);
+        }
+        else if (operacao == 2)
+        {
+            pPrincipal = new JPanel(new GridLayout(5, 1));
+            pBtn = new JPanel(new FlowLayout());
+            pCod = new JPanel(new FlowLayout());
+            pQuant = new JPanel(new FlowLayout());
+            
+            txt_cod = new JTextField(15);
+            txt_quant = new JTextField(15);
+            
+            lCod = new JLabel ("Código:");
+            lQuant = new JLabel ("Quantidade:");
+            
+            pBtn.add (btnAtualiza);
+            pBtn.add (btnFechar);
+            
+            pCod.add (lCod);
+            pCod.add (txt_cod);
+            
+            pQuant.add (lQuant);
+            pQuant.add (txt_quant);
+            
+            pPrincipal.add (pCod);
+            pPrincipal.add (pQuant);
+            pPrincipal.add (pBtn);
         }
         
 
@@ -154,6 +182,32 @@ public class limiteMercadoria extends JFrame implements ActionListener {
         else if (e.getSource() == btnFechar) {
             this.dispose();
         }
+        else if (e.getSource() == btnAtualiza) {
+            atualizarMercadoria();
+        }
+    }
+
+    private void atualizarMercadoria ()
+    {
+        int codigo, qtd;
+        String ans;
+        String codigoTxt = txt_cod.getText ();
+        String quantTxt = txt_quant.getText ();
+        if (codigoTxt.isEmpty () && quantTxt.isEmpty ()) {
+            JOptionPane.showMessageDialog (null, "Um dos campos está vazio!");
+        }
+        else {
+            codigo = Integer.parseInt (codigoTxt);
+            qtd = Integer.parseInt (quantTxt);
+            try {
+                ans = ctrMercadoria.concluiAlteraQtd (codigo, qtd);
+                JOptionPane.showMessageDialog (null, ans);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog (null, e.getMessage ());
+            }
+        }
+        
+        
     }
 
 }

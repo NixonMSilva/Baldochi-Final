@@ -79,7 +79,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         } else if(e.getSource().equals(btnCliente)){
             ctrPrincipal.getCtrCliente().cadastraCliente();
         } else if(e.getSource().equals(btnAtualiza)){
-            ctrPrincipal.getCtrMercadoria().criaJanelaQt();
+            ctrPrincipal.getCtrMercadoria().alteraQtd ();
         } else if(e.getSource().equals(btnVenda)){
             
         } else if(e.getSource().equals(btnConsultaCliente)){

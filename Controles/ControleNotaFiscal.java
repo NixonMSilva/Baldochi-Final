@@ -9,7 +9,28 @@
 package Controles;
 
 import Limites.*;
+import entidade.NotaFiscal;
+import java.util.ArrayList;
 
 public class ControleNotaFiscal {
-    limiteNotaFiscal limNota;
+    private limiteNotaFiscal limNota;
+    private ControlePrincipal ctrPrincipal;
+    
+    private ArrayList<NotaFiscal> listaNota = new ArrayList<>();
+    
+    NotaFiscal notaObj;
+    
+    public ControleNotaFiscal (ControlePrincipal cp) {
+        desserializaNota ();
+        ctrPrincipal = cp;
+    }
+    
+    
+
+    private void desserializaNota ()
+    {
+        throw new UnsupportedOperationException ("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
+
+
