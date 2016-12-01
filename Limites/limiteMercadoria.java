@@ -137,13 +137,42 @@ public class limiteMercadoria extends JFrame implements ActionListener
             pPrincipal.add (pBtn);
         }
         
-
         //Fram
         this.add(pPrincipal);
         this.setSize(350, 270);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+    
+    public limiteMercadoria(ControleMercadoria pCtrMercadoria, String classificacao) 
+    {
+        super("Mercadoria");
+        this.ctrMercadoria = pCtrMercadoria;
+        
+        pResult = new JPanel (new FlowLayout());
+        pBtn = new JPanel (new FlowLayout());
+        pPrincipal = new JPanel (new FlowLayout());
+        
+        txt_resultados = new JTextArea(20, 15);
+        txt_resultados.setEditable (false);
+        txt_resultados.setAutoscrolls (true);
+        txt_resultados.setText (classificacao);
+
+        btnFechar = new JButton("Fechar");
+        btnFechar.addActionListener(this);
+        
+        pBtn.add (btnFechar);
+        pResult.add (txt_resultados);
+        
+        pPrincipal.add (pResult);
+        pPrincipal.add (pBtn);
+        
+        this.add (pPrincipal);
+        this.setSize (400, 400);
+        this.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo (null);
+        this.setVisible (true);
     }
     
     public void consultarMercadoria () {

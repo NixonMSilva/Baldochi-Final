@@ -7,10 +7,10 @@
  */
 package entidade;
 
-import java.util.*;
 import java.io.Serializable;
 
-public class Mercadoria implements Serializable {
+public class Mercadoria implements Serializable, Comparable<Mercadoria>
+{
 
     private int cod, qt_disp;
     private String descricao;
@@ -77,5 +77,15 @@ public class Mercadoria implements Serializable {
     
     public void remove_vendido (int qtd) {
         this.qt_vendida = this.qt_vendida - qtd;
+    }
+
+    @Override
+    public int compareTo (Mercadoria o)
+    {
+        if (this.qt_vendida > o.get_qt_vendida ())
+            return 1;
+        if (this.qt_vendida < o.get_qt_vendida ())
+            return -1;
+        return 0;
     }
 }

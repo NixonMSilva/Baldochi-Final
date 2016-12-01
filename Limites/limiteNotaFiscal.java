@@ -236,25 +236,39 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     // VALIDAÇÕES                                       //
     // !----------------------------------------------! //
     
-    public void iniciaValidacao (String pCPF, String pData)
+    public boolean iniciaValidacao (String pCPF, String pData)
     {
         String erro = "";
+        boolean flag = true;
         if (!validaNota (pCPF, pData))
         {
             for (int i = 0; i < 10; ++i)
             {
                 if (validade[i] == 1)
-                    erro += "Erro com o produto " + i + ": Código inexistente\n";
+                {
+                    erro += "Erro com o produto " + (i+1) + ": Código inexistente\n";
+                    flag = false;
+                }  
                 else if (validade[i] == 2)
-                    erro += "Erro com o produto " + i + ": Quantidade excede aquela do estoque ou valores inválidos\n";
+                {
+                    erro += "Erro com o produto " + (i+1) + ": Quantidade excede aquela do estoque ou valores inválidos\n";
+                    flag = false;
+                }     
                 else if (validade[i] == 3)
-                    erro += "Erro com o produto " + i + ": Campo de quantidade vazio\n";
+                {
+                    erro += "Erro com o produto " + (i+1) +  ": Campo de quantidade vazio\n";
+                    flag = false;
+                }
                 else if (validade[i] == 4)
-                    erro += "Erro com o produto " + i + ": Campo de código vazio\n";
+                {
+                    erro += "Erro com o produto " + (i+1) + ": Campo de código vazio\n";
+                    flag = false;
+                }
             }
         }
         if (!erro.isEmpty ())
                 JOptionPane.showMessageDialog (null, erro);
+        return flag;
     }
     
     public boolean validaNota (String pCPF, String pData)
@@ -380,8 +394,10 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         {
             String pCPF = txtCPFCliente.getText ();
             String pData = txtData.getText ();
-            iniciaValidacao (pCPF, pData);
-            emitirNota (pCPF, pData);
+            if (iniciaValidacao (pCPF, pData))
+                emitirNota (pCPF, pData);
+            else
+                JOptionPane.showMessageDialog (null, "Nota fiscal contém erros de entrada!");
         }
         else if (e.getSource () == btnAtualizar)
         {

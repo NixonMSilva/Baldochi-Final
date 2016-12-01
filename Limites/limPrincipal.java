@@ -18,7 +18,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
 
     JPanel painelProduto, painelCliente, painelPrincipal, painelVenda, painelConsulta;
     JButton btnCliente, btnProduto, btnAtualiza, btnVenda, btnConsultaCliente, btnConsultaEstoque;
-    JButton btnConsultaNota;
+    JButton btnConsultaNota, btnDezMais;
     ControlePrincipal ctrPrincipal;
     
     public limPrincipal(ControlePrincipal pCtrPrincipal){
@@ -42,6 +42,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         btnConsultaCliente = new JButton("Consultar Cliente");
         btnConsultaEstoque = new JButton("Consultar Estoque");
         btnConsultaNota = new JButton("Consultar Nota Fiscal");
+        btnDezMais = new JButton ("10 Mais Vendidos");
     
         //adicao dos ActionListener
         btnProduto.addActionListener(this);
@@ -51,6 +52,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         btnConsultaCliente.addActionListener(this);
         btnConsultaEstoque.addActionListener(this);
         btnConsultaNota.addActionListener (this);
+        btnDezMais.addActionListener (this);
         
         //adicao dos botoes aos paineis respectivos
         painelProduto.add(btnProduto);
@@ -60,6 +62,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         painelConsulta.add(btnConsultaCliente);
         painelConsulta.add(btnConsultaEstoque);
         painelConsulta.add(btnConsultaNota);
+        painelConsulta.add(btnDezMais);
         
         //PAINEL PRINCIPAL
         painelPrincipal.add(painelProduto);
@@ -92,6 +95,8 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
             ctrPrincipal.getCtrMercadoria().consultarMercadoria();
         } else if (e.getSource().equals(btnConsultaNota)){
             ctrPrincipal.getCtrNota().buscaNota();
+        } else if (e.getSource().equals(btnDezMais)) {
+            ctrPrincipal.getCtrMercadoria().maisVendidas();
         }
     }
 

@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ControleMercadoria {
 
@@ -228,5 +229,21 @@ public class ControleMercadoria {
             else
                 concluiAtualizaQtd (codProduto, -qtdVendida, situacao);
         }
+    }
+
+    public void maisVendidas ()
+    {
+        String resultado = "";
+        ArrayList<Mercadoria> ordenado = new ArrayList<>(listaMercadoria);
+        Collections.sort (ordenado);
+        Collections.reverse (ordenado);
+        for (int i = 0; ((i < 10) && (i < ordenado.size ())); ++i)
+        {
+            Mercadoria aux = ordenado.get (i);
+            resultado += (i + 1) + ". " + aux.getDescricao () + "\t" +
+                    aux.get_qt_vendida () + "\n";
+        }
+        System.out.println (resultado);
+        new limiteMercadoria (this, resultado);
     }
 }
