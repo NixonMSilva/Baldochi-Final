@@ -45,7 +45,6 @@ public class limiteEstoque extends JFrame implements ActionListener {
         lcod = new JLabel("Codigo da mercadoria:");
         txt_cod = new JTextField(15);
 
-
         btn_procura = new JButton("Procurar");
 
         btn_procura.addActionListener(this);

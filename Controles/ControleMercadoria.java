@@ -77,6 +77,18 @@ public class ControleMercadoria {
         }
         throw new Exception ("Código de mercadoria inexistente!");
     }
+    
+    public void concluiAtualizaQtd (int pCod, int pQtd)
+    {
+        for (Mercadoria ObjM: listaMercadoria)
+        {
+            if (ObjM.getCod() == pCod)
+            {
+                ObjM.setQt_disp (ObjM.getQt_disp () - pQtd);
+                ObjM.add_vendido (pQtd);
+            }
+        }
+    }
 
     public void consultarMercadoria() {
         new limiteMercadoria (this, 1); 
@@ -87,7 +99,8 @@ public class ControleMercadoria {
             if (pCod == m.getCod ()) {
                 String ans = "Qtd. no Estoque: " + m.getQt_disp () + "\n" +
                         "Descrição: " + m.getDescricao () + "\n" +
-                        "Preço de Venda: R$ " + m.getValor_venda ();
+                        "Preço de Venda: R$ " + m.getValor_venda () + "\n" +
+                        "Quantidade Vendida:" + m.get_qt_vendida ();
                 return ans;
             }
         }
@@ -191,5 +204,17 @@ public class ControleMercadoria {
             }
         }
         return "";
+    }
+
+    void atualizaMercadoria (ArrayList<Integer> vendas)
+    {
+        int codProduto, qtdVendida;
+        int qtdVendas = (vendas.size () / 2);
+        for (int i = 0; i < qtdVendas; ++i)
+        {
+            codProduto = vendas.get (i * 2);
+            qtdVendida = vendas.get ((i * 2) + 1);
+            concluiAtualizaQtd (codProduto, qtdVendida);
+        }
     }
 }

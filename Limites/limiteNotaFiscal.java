@@ -14,6 +14,8 @@ import javax.swing.JFrame;
 import Controles.ControleNotaFiscal;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import entidade.NotaFiscal;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -143,6 +145,10 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         this.setVisible (true);
     }
     
+    // !----------------------------------------------! //
+    // MÉTODOS DE FUNCIONAMENTO                         //
+    // !----------------------------------------------! //
+    
     public void emitirNota (String pCPF, String pData)
     {
         ctrNota.concluirEmissaoNota (pCPF, pData, codigo, qtd, validade);
@@ -156,6 +162,24 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     public void consultarNota()
     {
         
+    }
+    
+    public void imprimeNota (NotaFiscal nota)
+    {
+        int qtd_produtos = (nota.getProdutos().size() / 2);
+        ArrayList<Integer> prod = nota.getProdutos();
+        String saida = "Nro Nota: " + nota.getNroNota () + "\n" +
+                "Cliente: " + nota.getCPF () + "\n" +
+                "Data: "  + nota.getData() + "\n" +
+                "Qtd.: " + qtd_produtos + "\n" +
+                "Produto:           Qtd.:\n";
+        for (int i = 0; i < qtd_produtos; ++i)
+        {
+            Integer id = prod.get (i * 2);
+            Integer qtde = prod.get ((i * 2) + 1);
+            saida += ctrNota.getDesc (id) + "          " + qtde + "\n";
+        }
+        JOptionPane.showMessageDialog (null, saida);
     }
     
     // !----------------------------------------------! //
@@ -227,10 +251,15 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     private void vetoresAtualiza ()
     {
         int codInteiro, qtdInteiro;
+        for (int i = 0; i < 10; ++i)
+        {
+            validade[i] = -1;
+        }
         for (int k = 0; k < 10; ++k) 
         {
             String codFieldAux = txtCod[k].getText ();
             String qtdFieldAux = txtQtd[k].getText ();
+            
             
             if ((!codFieldAux.isEmpty ()) && (!qtdFieldAux.isEmpty ()))
             {
@@ -263,10 +292,10 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             {
                 validade[k] = 3;
             }
-            else
-            {
-                validade[k] = -1;
-            }
+        }
+        for (int i = 0; i < 10; ++i)
+        {
+            System.out.println ("Validade[i]: " + validade[i]);
         }
     }
     

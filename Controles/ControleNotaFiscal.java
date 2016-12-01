@@ -45,33 +45,32 @@ public class ControleNotaFiscal {
     
     public void concluirEmissaoNota (String cpf, String data, int codigo[], int qtd[], int validade[])
     {
-        int nroNota = (listaNota.size() + 1), k = 0, j = 0;
+        ArrayList<Integer> produtos = new ArrayList<>();
+        int nroNota = (listaNota.size() + 1), k = 0;
         // Conta quantos produtos válidos foram inseridos
         for (int i = 0; i < 10; ++i)
         {
             if (validade[i] == 0)
-                k++;
-        }
-        int[] codigoProcessado = new int [k];
-        int[] qtdProcessada = new int[k];
-        
-        // Adiciona ao vetor de "processados" aqueles dados corretos
-        for (int i = 0; ((i < 10) || (j < k)); ++i)
-        {
-            if (validade[i] == 0)
             {
-                codigoProcessado[j] = codigo[i];
-                qtdProcessada[j] = qtd[i];
-                j++;
+                produtos.add (codigo[i]);
+                produtos.add (qtd[i]);
+                k++;
             }
         }
+        System.out.println ("K: " + k);
+        
+        
+        // Adiciona ao vetor de "processados" aqueles dados corretos
         try {
-            notaObj = new NotaFiscal (nroNota, cpf, false, stringToDate (data), codigo, qtd);
+            notaObj = new NotaFiscal (nroNota, cpf, false, stringToDate (data), produtos);
             listaNota.add (notaObj);
+            limNota.imprimeNota (notaObj);
         } catch (Exception e) {
             JOptionPane.showMessageDialog (null, e.getMessage ());
         }
         
+        // Atualiza o estoque dos produtos com base no ArrayList de produtos
+        ctrPrincipal.getCtrMercadoria().atualizaMercadoria (produtos);
     }
     
      
