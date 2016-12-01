@@ -23,7 +23,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
     
     public limPrincipal(ControlePrincipal pCtrPrincipal){
         
-        super("Trabalho Final");
+        super("Sistema de Gestão de Vendas");
         
         ctrPrincipal = pCtrPrincipal;
         

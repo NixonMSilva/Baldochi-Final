@@ -20,11 +20,11 @@ public class ControlePrincipal {
         
         try {
             limPrinc = new limPrincipal(this);
+            ctrCliente = new ControleCliente(this); 
             ctrMercadoria = new ControleMercadoria(this);
             ctrNota = new ControleNotaFiscal(this);
-            ctrCliente = new ControleCliente(this); 
         } catch (Exception e) {
-            System.out.println ("Erro de inicialização");
+            System.out.println (e.getMessage ());
         }
         
     }
@@ -46,7 +46,7 @@ public class ControlePrincipal {
     }
     
     @Override
-    public void finalize() throws Throwable {
+    public void finalize () throws Throwable {
         try {
             ctrCliente.finalize ();
             ctrMercadoria.finalize ();

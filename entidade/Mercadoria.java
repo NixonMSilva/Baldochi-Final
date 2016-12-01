@@ -74,4 +74,8 @@ public class Mercadoria implements Serializable {
     public void add_vendido (int qtd) {
         this.qt_vendida = this.qt_vendida + qtd;
     }
+    
+    public void remove_vendido (int qtd) {
+        this.qt_vendida = this.qt_vendida - qtd;
+    }
 }

@@ -64,12 +64,11 @@ public class ControleMercadoria {
         int antes, depois;
         String resposta = "";
         for (Mercadoria ObjM : listaMercadoria) {
-            System.out.println("entrou aqui");
             if (ObjM.getCod() == pCod) {
                 antes = ObjM.getQt_disp ();
-                System.out.println("Quantide: " + ObjM.getQt_disp());
+                // System.out.println("Quantide: " + ObjM.getQt_disp());
                 ObjM.setQt_disp(ObjM.getQt_disp() + pQtd);  //Altero a qtde
-                System.out.println("Quantide: " + ObjM.getQt_disp());
+                // System.out.println("Quantide: " + ObjM.getQt_disp());
                 depois = ObjM.getQt_disp ();
                 resposta = "Quantidade do produto " + ObjM.getDescricao () + " alterada de " + antes + " para " + depois + "!";
                 return resposta;
@@ -78,14 +77,17 @@ public class ControleMercadoria {
         throw new Exception ("Código de mercadoria inexistente!");
     }
     
-    public void concluiAtualizaQtd (int pCod, int pQtd)
+    public void concluiAtualizaQtd (int pCod, int pQtd, int situacao)
     {
         for (Mercadoria ObjM: listaMercadoria)
         {
             if (ObjM.getCod() == pCod)
             {
                 ObjM.setQt_disp (ObjM.getQt_disp () - pQtd);
-                ObjM.add_vendido (pQtd);
+                if (situacao == 0)
+                    ObjM.add_vendido (pQtd);
+                else
+                    ObjM.remove_vendido (pQtd);
             }
         }
     }
@@ -116,7 +118,8 @@ public class ControleMercadoria {
         objOS.close();
     }
     
-    private void desserializaMercadoria () throws Exception {
+    private void desserializaMercadoria () throws Exception 
+    {
         File objFile = new File("mercadorias.dat");
         if (objFile.exists()) {
             FileInputStream objFileIS = new FileInputStream("mercadorias.dat");
@@ -206,7 +209,7 @@ public class ControleMercadoria {
         return "";
     }
 
-    void atualizaMercadoria (ArrayList<Integer> vendas)
+    void atualizaMercadoria (ArrayList<Integer> vendas, int situacao)
     {
         int codProduto, qtdVendida;
         int qtdVendas = (vendas.size () / 2);
@@ -214,7 +217,10 @@ public class ControleMercadoria {
         {
             codProduto = vendas.get (i * 2);
             qtdVendida = vendas.get ((i * 2) + 1);
-            concluiAtualizaQtd (codProduto, qtdVendida);
+            if (situacao == 0)
+                concluiAtualizaQtd (codProduto, qtdVendida, situacao);
+            else
+                concluiAtualizaQtd (codProduto, -qtdVendida, situacao);
         }
     }
 }

@@ -28,15 +28,20 @@ public class ControleNotaFiscal {
     private ControlePrincipal ctrPrincipal;
     
     private ArrayList<NotaFiscal> listaNota = new ArrayList<>();
-    
+   
     NotaFiscal notaObj;
     
     // !----------------------------------------------! //
     // CONSTRUÇÃO                                       //
     // !----------------------------------------------! //
     
-    public ControleNotaFiscal (ControlePrincipal cp) throws Exception {
-        desserializaNota ();
+    public ControleNotaFiscal (ControlePrincipal cp) throws Exception 
+    {
+        try {
+            desserializaNota ();
+        } catch (Exception e) {
+            System.out.println (e.getMessage ());
+        }
         ctrPrincipal = cp;
     }
     
@@ -74,13 +79,13 @@ public class ControleNotaFiscal {
         try {
             notaObj = new NotaFiscal (nroNota, cpf, false, stringToDate (data), produtos);
             listaNota.add (notaObj);
-            limNota.imprimeNota (notaObj);
+            // limNota.imprimeNota (notaObj);
         } catch (Exception e) {
             JOptionPane.showMessageDialog (null, e.getMessage ());
         }
         
         // Atualiza o estoque dos produtos com base no ArrayList de produtos
-        ctrPrincipal.getCtrMercadoria().atualizaMercadoria (produtos);
+        ctrPrincipal.getCtrMercadoria().atualizaMercadoria (produtos, 0);
     }
     
     public void buscaNota ()
@@ -90,17 +95,30 @@ public class ControleNotaFiscal {
     
     public boolean concluirBuscaNota (int nroNota)
     {
-        for (NotaFiscal objNota: listaNota)
+        for (NotaFiscal nf: listaNota)
         {
-            if (objNota.getNroNota () == nroNota)
+            if (nf.getNroNota () == nroNota)
             {
-                limNota.imprimeNota (objNota);
+                limNota.imprimeNota (nf, 1);
                 return true;
             }
         }
         return false;
     }
     
+    public void cancelarNota (int nroNota)
+    {
+        NotaFiscal nf;
+        ArrayList<Integer> produtos;
+        for (int i = 0; i < listaNota.size (); ++i)
+        {
+            nf = (NotaFiscal) listaNota.get (i);
+            produtos = nf.getProdutos ();
+            nf.setCancelada ();
+            ctrPrincipal.getCtrMercadoria ().atualizaMercadoria (produtos, 1);
+            listaNota.set (i, nf);
+        }
+    }
      
     // !----------------------------------------------! //
     // SERIALIZAÇÃO                                     //

@@ -29,7 +29,11 @@ public class ControleCliente
     
     public ControleCliente (ControlePrincipal cp) throws Exception
     {
-        desserializaCliente ();
+        try {
+            desserializaCliente ();
+        } catch (Exception e) {
+            System.out.println (e.getMessage ());
+        }
         ctrPrincipal = cp;
     }
     
@@ -70,13 +74,17 @@ public class ControleCliente
         objOS.close();
     }
     
-    private void desserializaCliente () throws Exception {
+    private void desserializaCliente () throws Exception 
+    {
         File objFile = new File("clientes.dat");
         if (objFile.exists()) {
             FileInputStream objFileIS = new FileInputStream("clientes.dat");
             ObjectInputStream objIS = new ObjectInputStream(objFileIS);
             listaCliente = (ArrayList) objIS.readObject();
             objIS.close();
+        }
+        else {
+            throw new Exception ("Dados de clientes não encontrados!");
         }
     }
     

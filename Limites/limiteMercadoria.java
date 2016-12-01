@@ -14,7 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
-public class limiteMercadoria extends JFrame implements ActionListener {
+public class limiteMercadoria extends JFrame implements ActionListener 
+{
 
     ControleMercadoria ctrMercadoria;
 

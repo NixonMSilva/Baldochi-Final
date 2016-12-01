@@ -12,15 +12,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class limiteCliente extends JFrame implements ActionListener{
+public class limiteCliente extends JFrame implements ActionListener
+{
     ControleCliente ctrCliente;
-    
     // Elementos - Cadastro
     JPanel painelNome, painelEndereco, painelEmail, painelCPF,pBtn, pPrincipal;
     JTextField txt_nome, txt_endereco, txt_email, txt_cpf;
     JLabel lNome, lEndereco, lEmail, lCpf;
     JButton btnCadastra;
-    
+            
     // Elementos - Consulta
     JPanel painelTexto;
     JTextArea txt_resultados;
@@ -29,7 +29,7 @@ public class limiteCliente extends JFrame implements ActionListener{
     public limiteCliente(ControleCliente controle, int operacao){
         super("Cliente");
         this.ctrCliente = controle;
-        
+
         // Botões
         btnCadastra = new JButton ("Cadastra");
         btnCadastra.addActionListener (this);

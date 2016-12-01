@@ -46,17 +46,16 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     JPanel pNroNota, pResultados;
     JLabel lNroNota;
     JTextField txtNroNota;
-    JButton btnBusca, btnFecha;
+    JButton btnBusca, btnFecha, btnCancela;
     JTextArea areaResultados;
     
     public limiteNotaFiscal (ControleNotaFiscal cn, int operacao) 
     {
-        super ("Emissão de Nota Fiscal");
+        super ("Nota Fiscal");
         this.ctrNota = cn;
         pPrincipal = new JPanel (new FlowLayout());
         pBotoes = new JPanel (new FlowLayout());
         
-        System.out.println ("Aqui");
         if (operacao == 0) {
             // Botões
             btnConfirma = new JButton ("Confirma");
@@ -159,6 +158,8 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             btnBusca.addActionListener (this);
             btnFecha = new JButton ("Fechar");
             btnFecha.addActionListener (this);
+            btnCancela = new JButton ("Cancelar Nota");
+            btnCancela.addActionListener (this);
             
             // Adesão aos painéis
             pNroNota.add (lNroNota);
@@ -166,6 +167,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             
             pBotoes.add (btnBusca);
             pBotoes.add (btnFecha);
+            pBotoes.add (btnCancela);
             
             pResultados.add (areaResultados);
             
@@ -191,11 +193,12 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     public void emitirNota (String pCPF, String pData)
     {
         ctrNota.concluirEmissaoNota (pCPF, pData, codigo, qtd, validade);
+        this.dispose ();
     }
     
     public void cancelarNota ()
     {
-        
+        ctrNota.cancelarNota (Integer.parseInt (txtNroNota.getText ()));
     }
     
     public void consultarNota()
@@ -205,7 +208,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog (null, "Nota de número inexistente!");   
     }
     
-    public void imprimeNota (NotaFiscal nota)
+    public void imprimeNota (NotaFiscal nota, int ocasiao)
     {
         int qtd_produtos = (nota.getProdutos().size() / 2);
         ArrayList<Integer> prod = nota.getProdutos();
@@ -220,7 +223,12 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             Integer qtde = prod.get ((i * 2) + 1);
             saida += ctrNota.getDesc (id) + "          " + qtde + "\n";
         }
-        JOptionPane.showMessageDialog (null, saida);
+        if (nota.isCancelada ())
+            saida += "NOTA CANCELADA";
+        if (ocasiao == 0)
+            JOptionPane.showMessageDialog (null, saida);
+        else
+            areaResultados.setText (saida);
     }
     
     // !----------------------------------------------! //
@@ -388,6 +396,10 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         else if (e.getSource () == btnFecha)
         {
             this.dispose ();
+        }
+        else if (e.getSource () == btnCancela)
+        {
+            cancelarNota ();
         }
     }
 }
