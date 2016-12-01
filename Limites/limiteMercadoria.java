@@ -24,6 +24,10 @@ public class limiteMercadoria extends JFrame implements ActionListener
     JLabel lCod, lDescricao, lPreco, lVenda, lQuant;
     JButton btnCadastra, btnConsulta, btnFechar, btnAtualiza;
     JTextArea txt_resultados;
+    
+    JLabel[] ranking;
+    JLabel[] nome;
+    JLabel[] qtd;
 
     public limiteMercadoria(ControleMercadoria pCtrMercadoria, int operacao) {
         super("Mercadoria");
@@ -145,29 +149,41 @@ public class limiteMercadoria extends JFrame implements ActionListener
         this.setVisible(true);
     }
     
-    public limiteMercadoria(ControleMercadoria pCtrMercadoria, String classificacao) 
+    public limiteMercadoria(ControleMercadoria pCtrMercadoria, String classDesc, String classQtde) 
     {
         super("Mercadoria");
         this.ctrMercadoria = pCtrMercadoria;
         
-        pResult = new JPanel (new FlowLayout());
+        String[] textos1 = classDesc.split ("\n");
+        String[] textos2 = classQtde.split ("\n");
+        
+        int textosLenghts = (textos1.length);
+        
         pBtn = new JPanel (new FlowLayout());
         pPrincipal = new JPanel (new FlowLayout());
-        
-        txt_resultados = new JTextArea(20, 15);
-        txt_resultados.setEditable (false);
-        txt_resultados.setAutoscrolls (true);
-        txt_resultados.setText (classificacao);
+        pResult = new JPanel (new GridLayout(textosLenghts, 3));
 
         btnFechar = new JButton("Fechar");
         btnFechar.addActionListener(this);
         
-        pBtn.add (btnFechar);
-        pResult.add (txt_resultados);
+        ranking = new JLabel[10];
+        nome = new JLabel[10];
+        qtd = new JLabel[10];
         
+        for (int i = 0; i < textosLenghts; ++i)
+        {
+            ranking[i] = new JLabel ((i + 1) + ".");
+            nome[i] = new JLabel ((textos1[i]));
+            qtd[i] = new JLabel ((textos2[i]));
+            pResult.add (ranking[i]);
+            pResult.add (nome[i]);
+            pResult.add (qtd[i]);
+        }
+        
+        pBtn.add (btnFechar);
         pPrincipal.add (pResult);
         pPrincipal.add (pBtn);
-        
+
         this.add (pPrincipal);
         this.setSize (400, 400);
         this.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);

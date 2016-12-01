@@ -233,17 +233,17 @@ public class ControleMercadoria {
 
     public void maisVendidas ()
     {
-        String resultado = "";
+        String resultado_nome = "";
+        String resultado_qtde = "";
         ArrayList<Mercadoria> ordenado = new ArrayList<>(listaMercadoria);
         Collections.sort (ordenado);
         Collections.reverse (ordenado);
         for (int i = 0; ((i < 10) && (i < ordenado.size ())); ++i)
         {
             Mercadoria aux = ordenado.get (i);
-            resultado += (i + 1) + ". " + aux.getDescricao () + "\t" +
-                    aux.get_qt_vendida () + "\n";
+            resultado_nome += aux.getDescricao () + "\n";
+            resultado_qtde += aux.get_qt_vendida () + "\n";
         }
-        System.out.println (resultado);
-        new limiteMercadoria (this, resultado);
+        new limiteMercadoria (this, resultado_nome, resultado_qtde);
     }
 }
