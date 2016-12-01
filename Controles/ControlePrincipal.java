@@ -24,7 +24,7 @@ public class ControlePrincipal {
             ctrNota = new ControleNotaFiscal(this);
             ctrCliente = new ControleCliente(this); 
         } catch (Exception e) {
-            System.out.println ("Erro");
+            System.out.println ("Erro de inicialização");
         }
         
     }
@@ -50,6 +50,7 @@ public class ControlePrincipal {
         try {
             ctrCliente.finalize ();
             ctrMercadoria.finalize ();
+            ctrNota.finalize ();
         } catch (Exception e) {
             System.err.println ("Erro ao fechar arquivo!");
         }

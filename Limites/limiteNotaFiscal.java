@@ -43,26 +43,34 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     
     JButton btnConfirma, btnAtualizar;
     
+    JPanel pNroNota, pResultados;
+    JLabel lNroNota;
+    JTextField txtNroNota;
+    JButton btnBusca, btnFecha;
+    JTextArea areaResultados;
+    
     public limiteNotaFiscal (ControleNotaFiscal cn, int operacao) 
     {
         super ("Emissão de Nota Fiscal");
         this.ctrNota = cn;
-        btnConfirma = new JButton ("Confirma");
-        btnConfirma.addActionListener (this);
-        btnAtualizar = new JButton ("Atualizar Preço");
-        btnAtualizar.addActionListener (this);
+        pPrincipal = new JPanel (new FlowLayout());
+        pBotoes = new JPanel (new FlowLayout());
         
+        System.out.println ("Aqui");
         if (operacao == 0) {
-            // Painéis
-            pPrincipal = new JPanel (new FlowLayout());
+            // Botões
+            btnConfirma = new JButton ("Confirma");
+            btnConfirma.addActionListener (this);
+            btnAtualizar = new JButton ("Atualizar Preço");
+            btnAtualizar.addActionListener (this);
             
+            // Painéis
             pCliente = new JPanel (new FlowLayout());
             pData = new JPanel (new FlowLayout());
             pMercadoria = new JPanel (new GridLayout(10, 1));
             pGrupo = new JPanel[10];
             pPreco = new JPanel (new FlowLayout());
-            pBotoes = new JPanel (new FlowLayout());
-            
+
             // Labels
             lCliente = new JLabel ("CPF do Cliente:");
             lData = new JLabel ("Data da Emissão:");
@@ -135,6 +143,37 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             pPrincipal.add (pBotoes);
             
         }
+        else if (operacao == 1)
+        {
+            // Paineis
+            pNroNota = new JPanel (new FlowLayout());
+            pResultados = new JPanel (new FlowLayout());
+            
+            // Labels e Textos
+            lNroNota = new JLabel ("Número da Nota:");
+            txtNroNota = new JTextField (9);
+            areaResultados = new JTextArea ();
+            
+            // Botões
+            btnBusca = new JButton ("Buscar");
+            btnBusca.addActionListener (this);
+            btnFecha = new JButton ("Fechar");
+            btnFecha.addActionListener (this);
+            
+            // Adesão aos painéis
+            pNroNota.add (lNroNota);
+            pNroNota.add (txtNroNota);
+            
+            pBotoes.add (btnBusca);
+            pBotoes.add (btnFecha);
+            
+            pResultados.add (areaResultados);
+            
+            pPrincipal.add (pNroNota);
+            pPrincipal.add (pResultados);
+            pPrincipal.add (pBotoes);
+        }
+        
         this.add (pPrincipal);
         this.setSize (650, 450);
         this.setResizable (false);
@@ -161,7 +200,9 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     
     public void consultarNota()
     {
-        
+        int nroNota = Integer.parseInt (txtNroNota.getText ());
+        if (!ctrNota.concluirBuscaNota (nroNota))
+            JOptionPane.showMessageDialog (null, "Nota de número inexistente!");   
     }
     
     public void imprimeNota (NotaFiscal nota)
@@ -185,6 +226,27 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     // !----------------------------------------------! //
     // VALIDAÇÕES                                       //
     // !----------------------------------------------! //
+    
+    public void iniciaValidacao (String pCPF, String pData)
+    {
+        String erro = "";
+        if (!validaNota (pCPF, pData))
+        {
+            for (int i = 0; i < 10; ++i)
+            {
+                if (validade[i] == 1)
+                    erro += "Erro com o produto " + i + ": Código inexistente\n";
+                else if (validade[i] == 2)
+                    erro += "Erro com o produto " + i + ": Quantidade excede aquela do estoque ou valores inválidos\n";
+                else if (validade[i] == 3)
+                    erro += "Erro com o produto " + i + ": Campo de quantidade vazio\n";
+                else if (validade[i] == 4)
+                    erro += "Erro com o produto " + i + ": Campo de código vazio\n";
+            }
+        }
+        if (!erro.isEmpty ())
+                JOptionPane.showMessageDialog (null, erro);
+    }
     
     public boolean validaNota (String pCPF, String pData)
     {
@@ -306,28 +368,26 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     @Override
     public void actionPerformed (ActionEvent e) 
     {
-        String erro = "";
-        String pCPF = txtCPFCliente.getText ();
-        String pData = txtData.getText ();
-        if (!validaNota (pCPF, pData))
-            {
-                for (int i = 0; i < 10; ++i)
-                {
-                    if (validade[i] == 1)
-                        erro += "Erro com o produto " + i + ": Código inexistente\n";
-                    else if (validade[i] == 2)
-                        erro += "Erro com o produto " + i + ": Quantidade excede aquela do estoque ou valores inválidos\n";
-                    else if (validade[i] == 3)
-                        erro += "Erro com o produto " + i + ": Campo de quantidade vazio\n";
-                    else if (validade[i] == 4)
-                        erro += "Erro com o produto " + i + ": Campo de código vazio\n";
-                }
-            }
-            if (!erro.isEmpty ())
-                    JOptionPane.showMessageDialog (null, erro);
-        if (e.getSource () == btnConfirma) 
+        if (e.getSource () == btnConfirma)
         {
+            String pCPF = txtCPFCliente.getText ();
+            String pData = txtData.getText ();
+            iniciaValidacao (pCPF, pData);
             emitirNota (pCPF, pData);
+        }
+        else if (e.getSource () == btnAtualizar)
+        {
+            String pCPF = txtCPFCliente.getText ();
+            String pData = txtData.getText ();
+            iniciaValidacao (pCPF, pData);
+        }
+        else if (e.getSource () == btnBusca)
+        {
+            consultarNota ();
+        }
+        else if (e.getSource () == btnFecha)
+        {
+            this.dispose ();
         }
     }
 }

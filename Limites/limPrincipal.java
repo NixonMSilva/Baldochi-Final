@@ -18,6 +18,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
 
     JPanel painelProduto, painelCliente, painelPrincipal, painelVenda, painelConsulta;
     JButton btnCliente, btnProduto, btnAtualiza, btnVenda, btnConsultaCliente, btnConsultaEstoque;
+    JButton btnConsultaNota;
     ControlePrincipal ctrPrincipal;
     
     public limPrincipal(ControlePrincipal pCtrPrincipal){
@@ -40,6 +41,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         btnVenda = new JButton("Vender Produto");
         btnConsultaCliente = new JButton("Consultar Cliente");
         btnConsultaEstoque = new JButton("Consultar Estoque");
+        btnConsultaNota = new JButton("Consultar Nota Fiscal");
     
         //adicao dos ActionListener
         btnProduto.addActionListener(this);
@@ -48,6 +50,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         btnVenda.addActionListener(this);
         btnConsultaCliente.addActionListener(this);
         btnConsultaEstoque.addActionListener(this);
+        btnConsultaNota.addActionListener (this);
         
         //adicao dos botoes aos paineis respectivos
         painelProduto.add(btnProduto);
@@ -56,6 +59,7 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         painelVenda.add(btnVenda);
         painelConsulta.add(btnConsultaCliente);
         painelConsulta.add(btnConsultaEstoque);
+        painelConsulta.add(btnConsultaNota);
         
         //PAINEL PRINCIPAL
         painelPrincipal.add(painelProduto);
@@ -86,6 +90,8 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
             ctrPrincipal.getCtrCliente().consultaCliente();
         } else if(e.getSource().equals(btnConsultaEstoque)){
             ctrPrincipal.getCtrMercadoria().consultarMercadoria();
+        } else if (e.getSource().equals(btnConsultaNota)){
+            ctrPrincipal.getCtrNota().buscaNota();
         }
     }
 

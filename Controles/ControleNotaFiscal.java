@@ -11,6 +11,11 @@ package Controles;
 
 import Limites.*;
 import entidade.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,8 +35,8 @@ public class ControleNotaFiscal {
     // CONSTRUÇÃO                                       //
     // !----------------------------------------------! //
     
-    public ControleNotaFiscal (ControlePrincipal cp) {
-        // desserializaNota ();
+    public ControleNotaFiscal (ControlePrincipal cp) throws Exception {
+        desserializaNota ();
         ctrPrincipal = cp;
     }
     
@@ -39,7 +44,13 @@ public class ControleNotaFiscal {
     // OPERAÇÕES DE FUNCIONAMENTO                       //
     // !----------------------------------------------! //
     
-    public void emitirNota () {
+    public void emitirNota () 
+    {
+        try {
+            desserializaNota ();
+        } catch (Exception e) {
+            System.out.println (e.getMessage ());
+        }
         limNota = new limiteNotaFiscal (this, 0);
     }
     
@@ -59,7 +70,6 @@ public class ControleNotaFiscal {
         }
         System.out.println ("K: " + k);
         
-        
         // Adiciona ao vetor de "processados" aqueles dados corretos
         try {
             notaObj = new NotaFiscal (nroNota, cpf, false, stringToDate (data), produtos);
@@ -73,16 +83,64 @@ public class ControleNotaFiscal {
         ctrPrincipal.getCtrMercadoria().atualizaMercadoria (produtos);
     }
     
+    public void buscaNota ()
+    {
+        limNota = new limiteNotaFiscal (this, 1);
+    }
+    
+    public boolean concluirBuscaNota (int nroNota)
+    {
+        for (NotaFiscal objNota: listaNota)
+        {
+            if (objNota.getNroNota () == nroNota)
+            {
+                limNota.imprimeNota (objNota);
+                return true;
+            }
+        }
+        return false;
+    }
+    
      
     // !----------------------------------------------! //
     // SERIALIZAÇÃO                                     //
     // !----------------------------------------------! //
     
-    private void desserializaNota ()
+    private void serializaNota () throws Exception
     {
-        throw new UnsupportedOperationException ("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        FileOutputStream objFileOS = new FileOutputStream("notas.dat");
+        ObjectOutputStream objOS = new ObjectOutputStream(objFileOS);
+        objOS.writeObject(listaNota);
+        objOS.flush();
+        objOS.close();
     }
     
+    private void desserializaNota () throws Exception
+    {
+        File objFile = new File("notas.dat");
+        if (objFile.exists()) {
+            FileInputStream objFileIS = new FileInputStream("notas.dat");
+            ObjectInputStream objIS = new ObjectInputStream(objFileIS);
+            listaNota = (ArrayList) objIS.readObject();
+            objIS.close();
+        }
+        else {
+            throw new Exception ("Dados de notas fiscais não encontrados!");
+        }
+    }
+    
+    public void finalize () throws Throwable
+    {
+        try {
+            serializaNota ();
+        } catch (Exception e) {
+            System.out.println ("Erro na serialização de Notas Fiscais");
+        } finally
+        {
+            super.finalize ();
+        }
+    }
+
     // !----------------------------------------------! //
     // VALIDAÇÕES                                       //
     // !----------------------------------------------! //
