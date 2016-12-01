@@ -123,10 +123,15 @@ public class limiteCliente extends JFrame implements ActionListener
         this.setVisible(true);
     }
 
-    public void cadastrarCliente() {
-        ctrCliente.concluiCadastroCliente(txt_nome.getText(),txt_email.getText(),txt_cpf.getText(),
+    public void cadastrarCliente() 
+    {
+        try {
+             ctrCliente.concluiCadastroCliente(txt_nome.getText(),txt_email.getText(),txt_cpf.getText(),
                     txt_endereco.getText());
-        JOptionPane.showMessageDialog (null,"Cliente cadastrado com sucesso!");
+            JOptionPane.showMessageDialog (null,"Cliente cadastrado com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog (null, e.getMessage ());
+        }
         this.dispose();
     }
     

@@ -42,7 +42,7 @@ public class ControleCliente
         limCliente = new limiteCliente (this, 0);
     }
     
-    public void concluiCadastroCliente (String nome, String email, String cpf, String endereco)
+    public void concluiCadastroCliente (String nome, String email, String cpf, String endereco) throws Exception
     {
         clienteObj = new Cliente (nome, email, cpf, endereco);
         listaCliente.add (clienteObj);

@@ -36,9 +36,15 @@ public class ControleMercadoria {
         new limiteMercadoria (this, 0); 
     }
     
-    public void concluirCadastroMercadoria(int pCod, int pQtd, String pDesc, float pPreco, float pV_venda) throws Exception{
+    public void concluirCadastroMercadoria (int pCod, int pQtd, String pDesc, float pPreco, float pV_venda) throws Exception
+    {
         if(pDesc.equals("")){
             throw new Exception("Descricao não pode ser vazia!");
+        }
+        for (Mercadoria merc : listaMercadoria)
+        {
+            if (merc.getCod () == pCod)
+                throw new Exception ("Código de mercadoria já existente!");
         }
         Mercadoria m = new Mercadoria(pCod, pQtd, pDesc, pPreco, pV_venda);
         listaMercadoria.add(m);

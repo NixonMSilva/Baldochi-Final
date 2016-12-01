@@ -170,7 +170,6 @@ public class limiteMercadoria extends JFrame implements ActionListener
                         Float.parseFloat(txt_venda.getText()));
                 JOptionPane.showMessageDialog(null, "Mercadoria cadastrada com sucesso!");
                 this.dispose();
-
             } catch (NumberFormatException exc) {
                 JOptionPane.showMessageDialog(this, "Um dos campo está vazio");
             } catch (Exception ex) {

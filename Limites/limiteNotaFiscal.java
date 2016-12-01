@@ -192,7 +192,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     
     public void emitirNota (String pCPF, String pData)
     {
-        ctrNota.concluirEmissaoNota (pCPF, pData, codigo, qtd, validade);
+        ctrNota.concluirEmissaoNota (pCPF, pData, codigo, qtd, validade, getPrecoTotal ());
         this.dispose ();
     }
     
@@ -223,6 +223,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             Integer qtde = prod.get ((i * 2) + 1);
             saida += ctrNota.getDesc (id) + "          " + qtde + "\n";
         }
+        saida += "Preço Total: R$ " + nota.getPreco_total();
         if (nota.isCancelada ())
             saida += "NOTA CANCELADA";
         if (ocasiao == 0)
@@ -330,7 +331,6 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             String codFieldAux = txtCod[k].getText ();
             String qtdFieldAux = txtQtd[k].getText ();
             
-            
             if ((!codFieldAux.isEmpty ()) && (!qtdFieldAux.isEmpty ()))
             {
                 codInteiro = Integer.parseInt (codFieldAux);
@@ -363,10 +363,10 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
                 validade[k] = 3;
             }
         }
-        for (int i = 0; i < 10; ++i)
-        {
-            System.out.println ("Validade[i]: " + validade[i]);
-        }
+//        for (int i = 0; i < 10; ++i)
+//        {
+//            System.out.println ("Validade[i]: " + validade[i]);
+//        }
     }
     
     // !----------------------------------------------! //

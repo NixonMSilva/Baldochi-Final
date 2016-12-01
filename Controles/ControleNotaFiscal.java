@@ -51,15 +51,10 @@ public class ControleNotaFiscal {
     
     public void emitirNota () 
     {
-        try {
-            desserializaNota ();
-        } catch (Exception e) {
-            System.out.println (e.getMessage ());
-        }
         limNota = new limiteNotaFiscal (this, 0);
     }
     
-    public void concluirEmissaoNota (String cpf, String data, int codigo[], int qtd[], int validade[])
+    public void concluirEmissaoNota (String cpf, String data, int codigo[], int qtd[], int validade[], float preco_total)
     {
         ArrayList<Integer> produtos = new ArrayList<>();
         int nroNota = (listaNota.size() + 1), k = 0;
@@ -73,13 +68,12 @@ public class ControleNotaFiscal {
                 k++;
             }
         }
-        System.out.println ("K: " + k);
         
         // Adiciona ao vetor de "processados" aqueles dados corretos
         try {
-            notaObj = new NotaFiscal (nroNota, cpf, false, stringToDate (data), produtos);
+            notaObj = new NotaFiscal (nroNota, cpf, false, stringToDate (data), produtos, preco_total);
             listaNota.add (notaObj);
-            // limNota.imprimeNota (notaObj);
+            limNota.imprimeNota (notaObj, 0);
         } catch (Exception e) {
             JOptionPane.showMessageDialog (null, e.getMessage ());
         }
