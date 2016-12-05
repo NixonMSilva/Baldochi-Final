@@ -394,7 +394,6 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         boolean flag = true;
         if (!validaNota (pCPF, pData))
         {
-            flag = false;
             for (int i = 0; i < 10; ++i)
             {
                 if (validade[i] == 1)
@@ -406,6 +405,9 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
                 else if (validade[i] == 4)
                     erro += "Erro com o produto " + (i+1) + ": Campo de código vazio\n";
             }
+            if (!erro.isEmpty ())
+                JOptionPane.showMessageDialog (null, erro);
+            return false;
         }
         if (!checaTotalmenteVazio ())
         {
@@ -415,11 +417,35 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         else
         {
             flag = checaCamposRepetidos ();
-            erro += "Erro: Campos diferentes com códigos de produtos iguais!";
+            if (!flag)
+                erro += "Erro: Campos diferentes com códigos de produtos iguais!";
         }
         if (!erro.isEmpty ())
-                JOptionPane.showMessageDialog (null, erro);
+            JOptionPane.showMessageDialog (null, erro);
         return flag;
+    }
+    
+    public boolean validaCPFCadastrado (String pCPF)
+    {
+        if ((!pCPF.isEmpty ()) && (!ctrNota.validaCPF (pCPF)))
+        {
+            int resposta = JOptionPane.showConfirmDialog (null, "CPF não cadastrado. Realizar cadastro?");
+            if (resposta == JOptionPane.YES_OPTION)
+            {
+               ctrNota.cadastraCPF (pCPF);
+               return false;
+            }
+        }
+        else if (pCPF.isEmpty ())
+        {
+            JOptionPane.showMessageDialog (null, "Campo de CPF vazio!");
+            return false;
+        }
+        else
+        {
+            System.out.println (ctrNota.validaCPF (pCPF));
+        }
+        return ctrNota.validaCPF (pCPF);
     }
     
     public boolean validaNota (String pCPF, String pData)
@@ -434,20 +460,6 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         for (int i = 0; i < 10; ++i)
         {
             validade[i] = -1;
-        }
-        if (!ctrNota.validaCPF (pCPF))
-        {
-            if (!pCPF.isEmpty ())
-            {
-                int resposta = JOptionPane.showConfirmDialog (null, "CPF não cadastrado. Realizar cadastro?");
-                if (resposta == JOptionPane.YES_OPTION)
-                {
-                   ctrNota.cadastraCPF (pCPF); 
-                }
-            }
-            else
-                JOptionPane.showMessageDialog (null, "Campo de CPF vazio!");
-            return false;
         }
         if (!ctrNota.validaData (pData, "dd/MM/yyyy"))
         {
@@ -574,10 +586,6 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
                 validade[k] = 3;
             }
         }
-//        for (int i = 0; i < 10; ++i)
-//        {
-//            System.out.println ("Validade[i]: " + validade[i]);
-//        }
     }
     
     // !----------------------------------------------! //
@@ -591,10 +599,8 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         {
             String pCPF = txtCPFCliente.getText ();
             String pData = txtData.getText ();
-            if (iniciaValidacao (pCPF, pData))
+            if ((validaCPFCadastrado (pCPF)) && (iniciaValidacao (pCPF, pData)))
                 emitirNota (pCPF, pData);
-            else
-                JOptionPane.showMessageDialog (null, "Nota fiscal contém erros de entrada!");
         }
         else if (e.getSource () == btnAtualizar)
         {
