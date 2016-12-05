@@ -100,18 +100,80 @@ public class ControleNotaFiscal {
         return false;
     }
     
-    public void cancelarNota (int nroNota)
+    public void cancelarNota (int nroNota) throws Exception
     {
-        NotaFiscal nf;
         ArrayList<Integer> produtos;
-        for (int i = 0; i < listaNota.size (); ++i)
+        boolean encontrado = false;
+        for (NotaFiscal nf : listaNota)
         {
-            nf = (NotaFiscal) listaNota.get (i);
-            produtos = nf.getProdutos ();
-            nf.setCancelada ();
-            ctrPrincipal.getCtrMercadoria ().atualizaMercadoria (produtos, 1);
-            listaNota.set (i, nf);
+            if (nf.getNroNota () == nroNota)
+            {
+                if (nf.isCancelada ())
+                    throw new Exception ("Nota já cancelada!");
+                else
+                {
+                    produtos = nf.getProdutos ();
+                    nf.setCancelada ();
+                    ctrPrincipal.getCtrMercadoria ().atualizaMercadoria (produtos, 1);
+                    encontrado = true;
+                }
+            }
         }
+        if (!encontrado)
+            throw new Exception ("Nota de número inexistente!");
+    }
+    
+    public double calculaFaturamento (String cpf) 
+    {
+        double faturamento = 0;
+        for (int i = 0; i < listaNota.size(); i++) {
+            if (listaNota.get(i).getCPF().equals(cpf)) {
+                System.out.println("faturamento "+ listaNota.get(i).getPreco_total());
+                faturamento += listaNota.get(i).getPreco_total();
+            }
+        }
+        return faturamento;
+    }
+    
+        
+    public void consultaFatPeriodo ()
+    {
+        limNota = new limiteNotaFiscal (this, 2);
+    }
+    
+    
+    public double concluiFatPeriodo (String inicio, String fim) throws Exception
+    {
+        Date dataInicio, dataFim;
+        String formato = "dd/MM/yyyy";
+        double faturaAcumulada = 0.0;
+        
+        if (!validaData (inicio, formato))
+            throw new Exception ("Data de início em formato inválido!");
+        else if (!validaData (fim, formato))
+            throw new Exception ("Data de término em formato inválido!");
+        else 
+        {
+            dataInicio = stringToDate (inicio);
+            dataFim = stringToDate (fim);
+            
+            for (NotaFiscal nf : listaNota)
+            {
+                if ((nf.getData().compareTo(dataInicio) >= 0) && (nf.getData().compareTo(dataFim) <= 0) && (!nf.isCancelada ()))
+                {
+                    System.out.println (nf.isCancelada ());
+                    System.out.println ("Nota Fiscal encontrada! Data: " + nf.getData () + "\nNro Nota: " + nf.getNroNota ());
+                    faturaAcumulada += nf.getPreco_total();
+                }
+            }
+            return faturaAcumulada; 
+        }
+    }
+    
+    
+    public void consultaClientePeriodo ()
+    {
+        limNota = new limiteNotaFiscal (this, 4);
     }
      
     // !----------------------------------------------! //
@@ -227,8 +289,6 @@ public class ControleNotaFiscal {
         resultado  = (Date) formatter.parse (data);
         return resultado;
     }
-
-
 }
 
     

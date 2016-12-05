@@ -90,11 +90,18 @@ public class ControleMercadoria {
         {
             if (ObjM.getCod() == pCod)
             {
+                System.out.println ("Qt. Disponível Antes: " + ObjM.getQt_disp ());
+                System.out.println ("Qt. Vendida Antes: " + ObjM.get_qt_vendida ());
                 ObjM.setQt_disp (ObjM.getQt_disp () - pQtd);
                 if (situacao == 0)
                     ObjM.add_vendido (pQtd);
                 else
-                    ObjM.remove_vendido (pQtd);
+                {
+                    System.out.println ("Entrou aqui");
+                    ObjM.add_vendido (pQtd);
+                }
+                System.out.println ("Qt. Disponível Depois: " + ObjM.getQt_disp ());
+                System.out.println ("Qt. Vendida Depois: " + ObjM.get_qt_vendida ());
             }
         }
     }
@@ -110,6 +117,22 @@ public class ControleMercadoria {
                         "Descrição: " + m.getDescricao () + "\n" +
                         "Preço de Venda: R$ " + m.getValor_venda () + "\n" +
                         "Quantidade Vendida:" + m.get_qt_vendida ();
+                return ans;
+            }
+        }
+        throw new Exception ("Mercadoria com código inserido não encontrada!");
+    }
+    
+    public void consultaFatProd()
+    {
+        new limiteMercadoria (this, 3);
+    }
+    
+    public String faturamentoMercadoria (int pCod) throws Exception
+    {
+        for (Mercadoria m: listaMercadoria) {
+            if (pCod == m.getCod ()) {
+                String ans = "Faturamento: R$ " + m.getValor_venda()*m.get_qt_vendida ();
                 return ans;
             }
         }

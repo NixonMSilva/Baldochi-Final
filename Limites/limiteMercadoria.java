@@ -22,7 +22,7 @@ public class limiteMercadoria extends JFrame implements ActionListener
     JPanel pCod, pDescricao, pPreco, pVenda, pBtn, pPrincipal, pQuant, pResult;
     JTextField txt_cod, txt_descricao, txt_preco, txt_venda, txt_quant;
     JLabel lCod, lDescricao, lPreco, lVenda, lQuant;
-    JButton btnCadastra, btnConsulta, btnFechar, btnAtualiza;
+    JButton btnCadastra, btnConsulta, btnFechar, btnAtualiza, btnConsultaFat;
     JTextArea txt_resultados;
     
     JLabel[] ranking;
@@ -139,6 +139,28 @@ public class limiteMercadoria extends JFrame implements ActionListener
             pPrincipal.add (pCod);
             pPrincipal.add (pQuant);
             pPrincipal.add (pBtn);
+        } 
+        else if (operacao == 3) 
+        {
+            pPrincipal = new JPanel(new GridLayout(3, 1));
+            pBtn = new JPanel(new FlowLayout());
+            pCod = new JPanel(new FlowLayout());
+            pResult = new JPanel(new FlowLayout());
+            lCod = new JLabel("Codigo:");
+            txt_cod = new JTextField(15);
+            txt_resultados = new JTextArea(50, 20);
+            
+            btnConsultaFat = new JButton("Consulta");
+            btnConsultaFat.addActionListener(this);
+            pBtn.add(btnConsultaFat);
+            pBtn.add(btnFechar);
+            pCod.add(lCod);
+            pCod.add(txt_cod);
+            pResult.add(txt_resultados);
+
+            pPrincipal.add(pCod);
+            pPrincipal.add(pResult);
+            pPrincipal.add(pBtn);
         }
         
         //Fram
@@ -149,7 +171,7 @@ public class limiteMercadoria extends JFrame implements ActionListener
         this.setVisible(true);
     }
     
-    public limiteMercadoria(ControleMercadoria pCtrMercadoria, String classDesc, String classQtde) 
+    public limiteMercadoria (ControleMercadoria pCtrMercadoria, String classDesc, String classQtde) 
     {
         super("Mercadoria");
         this.ctrMercadoria = pCtrMercadoria;
@@ -230,6 +252,9 @@ public class limiteMercadoria extends JFrame implements ActionListener
         else if (e.getSource() == btnAtualiza) {
             atualizarMercadoria();
         }
+        else if (e.getSource() == btnConsultaFat) {
+            consultaFat();
+        }
     }
 
     private void atualizarMercadoria ()
@@ -253,4 +278,23 @@ public class limiteMercadoria extends JFrame implements ActionListener
         }
     }
 
+    private void consultaFat() 
+    {
+        int codigo;
+        String ans;
+        String codigoTxt = txt_cod.getText();
+        if (codigoTxt.isEmpty()) {
+            JOptionPane.showMessageDialog (null, "O campo codigo esta vazio!");
+        } else {
+            codigo = Integer.parseInt(codigoTxt);
+            try {
+                ans = ctrMercadoria.faturamentoMercadoria(codigo);
+                txt_resultados.setText(ans);
+                this.revalidate();
+                this.repaint();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+    }
 }

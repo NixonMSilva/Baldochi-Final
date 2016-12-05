@@ -49,12 +49,21 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     JButton btnBusca, btnFecha, btnCancela;
     JTextArea areaResultados;
     
+    JPanel pDatas, pResultadoData;
+    JTextField txtDataInicio, txtDataFim;
+    JTextArea txtResultadoData;
+    JLabel lDataInicio, lDataFim;
+    JButton btnBuscaPorData;
+    
     public limiteNotaFiscal (ControleNotaFiscal cn, int operacao) 
     {
         super ("Nota Fiscal");
         this.ctrNota = cn;
         pPrincipal = new JPanel (new FlowLayout());
         pBotoes = new JPanel (new FlowLayout());
+        
+        btnFecha = new JButton ("Fechar");
+        btnFecha.addActionListener (this);
         
         if (operacao == 0) {
             // Botões
@@ -156,8 +165,6 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             // Botões
             btnBusca = new JButton ("Buscar");
             btnBusca.addActionListener (this);
-            btnFecha = new JButton ("Fechar");
-            btnFecha.addActionListener (this);
             btnCancela = new JButton ("Cancelar Nota");
             btnCancela.addActionListener (this);
             
@@ -174,6 +181,40 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             pPrincipal.add (pNroNota);
             pPrincipal.add (pResultados);
             pPrincipal.add (pBotoes);
+        }
+        else if (operacao == 2)
+        {
+            pDatas = new JPanel (new FlowLayout());
+            pResultadoData = new JPanel (new FlowLayout());
+            
+            txtDataInicio = new JTextField (15);
+            txtDataFim = new JTextField (15);
+            
+            txtResultadoData = new JTextArea ();
+            txtResultadoData.setEditable (false);
+            
+            lDataInicio = new JLabel ("Início");
+            lDataFim = new JLabel ("Fim");
+            
+            btnBuscaPorData = new JButton ("Buscar");
+            btnBuscaPorData.addActionListener (this);
+            
+            pDatas.add (lDataInicio);
+            pDatas.add (txtDataInicio);
+            pDatas.add (lDataFim);
+            pDatas.add (txtDataFim);
+            
+            pResultadoData.add (txtResultadoData);
+            
+            pBotoes.add (btnBuscaPorData);
+            pBotoes.add (btnFecha);
+            
+            pPrincipal.add (pDatas);
+            pPrincipal.add (pResultadoData);
+            pPrincipal.add (pBotoes);
+            
+            
+
         }
         
         this.add (pPrincipal);
@@ -198,7 +239,13 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     
     public void cancelarNota ()
     {
-        ctrNota.cancelarNota (Integer.parseInt (txtNroNota.getText ()));
+        try {
+            ctrNota.cancelarNota (Integer.parseInt (txtNroNota.getText ()));
+            JOptionPane.showMessageDialog (null, "Nota cancelada com sucesso!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog (null, e.getMessage ());
+        }
+        
     }
     
     public void consultarNota()
@@ -210,6 +257,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     
     public void imprimeNota (NotaFiscal nota, int ocasiao)
     {
+        System.out.println (nota.isCancelada ());
         int qtd_produtos = (nota.getProdutos().size() / 2);
         ArrayList<Integer> prod = nota.getProdutos();
         String saida = "Nro Nota: " + nota.getNroNota () + "\n" +
@@ -225,11 +273,23 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         }
         saida += "Preço Total: R$ " + nota.getPreco_total();
         if (nota.isCancelada ())
-            saida += "NOTA CANCELADA";
+            saida += "\nNOTA CANCELADA";
         if (ocasiao == 0)
             JOptionPane.showMessageDialog (null, saida);
         else
             areaResultados.setText (saida);
+    }
+    
+    public void consultaFaturamentoData (String inicio, String fim)
+    {
+        double valorFaturamento;
+        try {
+            valorFaturamento = ctrNota.concluiFatPeriodo (inicio, fim);
+            txtResultadoData.setText ("Faturamento: R$ " + valorFaturamento);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog (null, e.getMessage ());
+        }
+        
     }
     
     // !----------------------------------------------! //
@@ -408,6 +468,12 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         else if (e.getSource () == btnBusca)
         {
             consultarNota ();
+        }
+        else if (e.getSource () == btnBuscaPorData)
+        {   
+            String inicio = txtDataInicio.getText ();
+            String fim = txtDataFim.getText ();
+            consultaFaturamentoData (inicio, fim);
         }
         else if (e.getSource () == btnFecha)
         {

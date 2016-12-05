@@ -19,7 +19,7 @@ public class NotaFiscal implements Serializable {
     private Date data;
     private float preco_total;
     
-    public NotaFiscal(int nroNota, String cpf, boolean cancelada, Date data, ArrayList<Integer> vendas, float preco_total){
+    public NotaFiscal (int nroNota, String cpf, boolean cancelada, Date data, ArrayList<Integer> vendas, float preco_total){
         this.nroNota = nroNota;
         this.cpf = cpf;
         this.cancelada = cancelada;
@@ -28,7 +28,7 @@ public class NotaFiscal implements Serializable {
         this.preco_total = preco_total;
     }
     
-    public NotaFiscal(int nroNota, String cpf, boolean cancelada, Date data, int[] codigo, int[] qtd) throws Exception
+    public NotaFiscal (int nroNota, String cpf, boolean cancelada, Date data, int[] codigo, int[] qtd) throws Exception
     {
         this.nroNota = nroNota;
         this.cpf = cpf;
@@ -83,11 +83,11 @@ public class NotaFiscal implements Serializable {
     }
 
     public void setCancelada() {
-        this.cancelada = false;
+        this.cancelada = true;
     }
     
     public void setCorrente(){
-        this.cancelada = true;
+        this.cancelada = false;
     }
     
     public void setCPF (String cpf) {

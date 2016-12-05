@@ -25,19 +25,28 @@ public class limiteCliente extends JFrame implements ActionListener
     JPanel painelTexto;
     JTextArea txt_resultados;
     JButton btnConsulta, btnFechar;
+	
+	//////////////////////////////////
+    //Elementos - Consulta Faturamento
+    JPanel painelTexto1;
+    JTextArea txt_resultados_faturamento;
+    JButton btnConsultaFaturamento, btnFecharFaturamento;
+    //////////////////////////////////
     
     public limiteCliente(ControleCliente controle, int operacao){
         super("Cliente");
         this.ctrCliente = controle;
-
+        
         // Botões
         btnCadastra = new JButton ("Cadastra");
         btnCadastra.addActionListener (this);
         btnConsulta = new JButton ("Consulta");
         btnConsulta.addActionListener (this);
         btnFechar = new JButton ("Fechar");
-        
         btnFechar.addActionListener (this);
+        btnConsultaFaturamento = new JButton ("Consultar Faturamento");
+        btnConsultaFaturamento.addActionListener (this);
+        
         if (operacao == 0)
         {
             //Paineis
@@ -88,10 +97,8 @@ public class limiteCliente extends JFrame implements ActionListener
         else if (operacao == 1)
         {
             pPrincipal = new JPanel(new GridLayout(5,1));
-            painelCPF = new JPanel();
-            painelCPF.setLayout(new FlowLayout());
-            painelTexto = new JPanel();
-            painelTexto.setLayout(new FlowLayout());
+            painelCPF = new JPanel(new FlowLayout());
+            painelTexto = new JPanel(new FlowLayout());
             pBtn = new JPanel ();
 
             //Labeis
@@ -107,12 +114,45 @@ public class limiteCliente extends JFrame implements ActionListener
             painelCPF.add (lCpf);
             painelCPF.add (txt_cpf);
             painelTexto.add (txt_resultados);
+            
             pBtn.add (btnConsulta);
             pBtn.add (btnFechar);
+            
             pPrincipal.add (painelCPF);
             pPrincipal.add (painelTexto);
             pPrincipal.add (pBtn);
         }
+        else if(operacao == 2) 
+        {
+            
+            pPrincipal = new JPanel(new GridLayout(3, 1));
+            painelCPF = new JPanel(new FlowLayout());
+            painelTexto1 = new JPanel(new FlowLayout());
+            pBtn = new JPanel(new FlowLayout());
+            
+            //Labeis
+            lCpf = new JLabel("CPF:");
+
+            // Campo de Texto
+            txt_cpf = new JTextField(15);
+
+            // Área de Texto
+            txt_resultados_faturamento = new JTextArea(10, 20);
+            
+            // Adição aos Painéis
+            
+            painelCPF.add(lCpf);
+            painelCPF.add(txt_cpf);
+            
+            painelTexto1.add(txt_resultados_faturamento);
+            
+            pBtn.add(btnConsultaFaturamento);
+            pBtn.add(btnFechar);
+            pPrincipal.add(painelCPF);
+            pPrincipal.add(painelTexto1);
+            pPrincipal.add(pBtn);
+        }
+        //////////////////////////////////
         //Frame
         this.add(pPrincipal);
         this.setSize(290,270);
@@ -147,6 +187,20 @@ public class limiteCliente extends JFrame implements ActionListener
         }
         
     }
+	
+	//////////////////////////////////
+    public void consultarFaturamento() {
+        String dados;
+        try {
+            dados = ctrCliente.concluiConsultaFaturamento(txt_cpf.getText());
+            txt_resultados_faturamento.setText(dados);
+            this.revalidate();
+            this.repaint();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    //////////////////////////////////
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -156,6 +210,9 @@ public class limiteCliente extends JFrame implements ActionListener
         }
         else if (e.getSource () == btnConsulta)
             consultarCliente ();
+        else if (e.getSource() == btnConsultaFaturamento) {
+            consultarFaturamento();
+        }
         else if (e.getSource () == btnFechar)
             this.dispose();
     }

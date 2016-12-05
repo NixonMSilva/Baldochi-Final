@@ -115,4 +115,21 @@ public class ControleCliente
         }
         return false;
     }
+	
+	//////////////////////////////////
+    public void consultaFaturamento() {
+        limCliente = new limiteCliente(this, 2);
+    }
+    //////////////////////////////////
+	
+	//////////////////////////////////
+    public String concluiConsultaFaturamento(String cpf) throws Exception {
+        for(Cliente c : listaCliente) {
+            if (cpf.equals(c.getCpf())) {
+                return c.getNome() + "\n" + ctrPrincipal.ctrNota.calculaFaturamento(cpf);
+            }
+        }
+        throw new Exception("Cliente com CPF inserido não encontrado!");
+    }
+    //////////////////////////////////
 }
