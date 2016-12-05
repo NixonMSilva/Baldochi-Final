@@ -18,14 +18,17 @@ public class NotaFiscal implements Serializable {
     private String cpf;
     private Date data;
     private float preco_total;
+    private float lucro_total;
     
-    public NotaFiscal (int nroNota, String cpf, boolean cancelada, Date data, ArrayList<Integer> vendas, float preco_total){
+    public NotaFiscal (int nroNota, String cpf, boolean cancelada, Date data, ArrayList<Integer> vendas, float preco_total, float lucro_total)
+    {
         this.nroNota = nroNota;
         this.cpf = cpf;
         this.cancelada = cancelada;
         this.data = data;
         this.vendas = vendas;
         this.preco_total = preco_total;
+        this.lucro_total = lucro_total;
     }
     
     public NotaFiscal (int nroNota, String cpf, boolean cancelada, Date data, int[] codigo, int[] qtd) throws Exception
@@ -66,31 +69,38 @@ public class NotaFiscal implements Serializable {
         return data;
     }
     
-    public int getNroNota() {
+    public int getNroNota() 
+    {
         return nroNota;
     }
     
-    public String getCPF () {
+    public String getCPF () 
+    {
         return cpf;
     }
 
-    public void setNroNota(int nroNota) {
+    public void setNroNota(int nroNota) 
+    {
         this.nroNota = nroNota;
     }
 
-    public boolean isCancelada() {
+    public boolean isCancelada() 
+    {
         return cancelada;
     }
 
-    public void setCancelada() {
+    public void setCancelada() 
+    {
         this.cancelada = true;
     }
     
-    public void setCorrente(){
+    public void setCorrente()
+    {
         this.cancelada = false;
     }
     
-    public void setCPF (String cpf) {
+    public void setCPF (String cpf) 
+    {
         this.cpf = cpf;
     }
 
@@ -102,6 +112,16 @@ public class NotaFiscal implements Serializable {
     public void setPreco_total (float preco_total)
     {
         this.preco_total = preco_total;
+    }
+    
+    public float getLucro_total ()
+    {
+        return lucro_total;
+    }
+    
+    public void setLucro_total (float lucro_total)
+    {
+        this.lucro_total = lucro_total;
     }
     
 }

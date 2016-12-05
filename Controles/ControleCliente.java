@@ -39,7 +39,12 @@ public class ControleCliente
     
     public void cadastraCliente ()
     {
-        limCliente = new limiteCliente (this, 0);
+        limCliente = new limiteCliente (this, 0, "");
+    }
+    
+    public void cadastraCliente (String pCpf)
+    {
+        limCliente=  new limiteCliente (this, 0, pCpf);
     }
     
     public void concluiCadastroCliente (String nome, String email, String cpf, String endereco) throws Exception
@@ -50,7 +55,7 @@ public class ControleCliente
     
     public void consultaCliente ()
     {
-        limCliente = new limiteCliente (this, 1);
+        limCliente = new limiteCliente (this, 1, "");
     }
     
     public String concluiConsultaCliente (String cpf) throws Exception
@@ -118,15 +123,15 @@ public class ControleCliente
 	
 	//////////////////////////////////
     public void consultaFaturamento() {
-        limCliente = new limiteCliente(this, 2);
+        limCliente = new limiteCliente (this, 2, "");
     }
     //////////////////////////////////
 	
 	//////////////////////////////////
-    public String concluiConsultaFaturamento(String cpf) throws Exception {
-        for(Cliente c : listaCliente) {
+    public String concluiConsultaFaturamento (String cpf) throws Exception {
+        for (Cliente c : listaCliente) {
             if (cpf.equals(c.getCpf())) {
-                return c.getNome() + "\n" + ctrPrincipal.ctrNota.calculaFaturamento(cpf);
+                return "Nome do Cliente: " + c.getNome () + "\nFaturamento Total: R$ " + ctrPrincipal.ctrNota.calculaFaturamento(cpf);
             }
         }
         throw new Exception("Cliente com CPF inserido não encontrado!");

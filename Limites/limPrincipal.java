@@ -12,11 +12,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.layout.Border;
 import javax.swing.*;
 
 public class limPrincipal extends JFrame implements ActionListener, WindowListener {
 
-    JPanel painelProduto, painelCliente, painelPrincipal, painelVenda, painelConsulta;
+    JPanel painelPrincipal, painelBotoes, painelTitulo;
     JButton btnCliente, btnProduto, btnAtualiza, btnVenda, btnConsultaCliente, btnConsultaEstoque;
     JButton btnDezMais;
     JButton btnConsultaNota, btnConsultaFatProd, btnConsultaFaturamento;
@@ -24,58 +25,66 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
     JButton btnConsultaFatPeriodo;
     JButton btnConsultaLucroLiquido;
     JButton btnConsultaClientePeriodo;
+    JLabel lTitulo;
     ControlePrincipal ctrPrincipal;
     
     public limPrincipal (ControlePrincipal pCtrPrincipal){
         
-        super("Sistema de Gestão de Vendas");
+        super ("Sistema de Gestão de Vendas");
         
         ctrPrincipal = pCtrPrincipal;
         
         //Criacao dos paineis
-        painelPrincipal = new JPanel(new GridLayout(5,1));
-        painelProduto = new JPanel(new FlowLayout());
-        painelCliente = new JPanel(new FlowLayout());
-        painelVenda = new JPanel(new FlowLayout());
-        painelConsulta = new JPanel(new FlowLayout());
+        painelPrincipal = new JPanel (new BorderLayout ());
+        painelBotoes = new JPanel (new GridLayout(5, 1, 15, 15));
+        painelTitulo = new JPanel (new FlowLayout());
         
-        //Criancao dos botoes
+        
+        //Criação dos labels
+        lTitulo = new JLabel ("Sistema de Gestão de Vendas");
+        
+        //Criação dos botoes
         btnProduto = new JButton("Cadastra Produto");
         btnCliente = new JButton("Cadastra Cliente");
         btnAtualiza = new JButton("Atualiza Estoque");
         btnVenda = new JButton("Vender Produto");
         btnConsultaPrincipal = new JButton("Consultas");
-    
+        
         //adicao dos ActionListener
         btnProduto.addActionListener(this);
         btnCliente.addActionListener(this);
         btnAtualiza.addActionListener(this);
         btnVenda.addActionListener(this);
-		btnConsultaPrincipal.addActionListener(this);
-        
-        //adicao dos botoes aos paineis respectivos
-        painelProduto.add(btnProduto);
-        painelProduto.add(btnAtualiza);
-        painelCliente.add(btnCliente);
-        painelVenda.add(btnVenda);
-        painelConsulta.add(btnConsultaPrincipal);
+	btnConsultaPrincipal.addActionListener(this);
         
         //PAINEL PRINCIPAL
-        painelPrincipal.add(painelProduto);
-        painelPrincipal.add(painelCliente);
-        painelPrincipal.add(painelVenda);
-        painelPrincipal.add(painelConsulta);
+        painelBotoes.add(btnProduto);
+        painelBotoes.add(btnAtualiza);
+        painelBotoes.add(btnCliente);
+        painelBotoes.add(btnVenda);
+        painelBotoes.add(btnConsultaPrincipal);
+        
+        
+        painelTitulo.add (lTitulo);
+        
+        painelPrincipal.add (painelTitulo, BorderLayout.PAGE_START);
+        painelPrincipal.add (painelBotoes, BorderLayout.CENTER);
+        
+        javax.swing.border.Border padding = BorderFactory.createEmptyBorder (10, 10, 10, 10);
+        painelBotoes.setBorder (padding);
         
         //Frame Principal
         this.addWindowListener (this);
         this.add(painelPrincipal);
-        this.setSize(400,400);
+        
+        this.pack ();
+        this.setSize(300, 300);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);  
+        this.setResizable (false);
         this.setVisible(true);
     }
 	
-	//------------------NOVO----
     public void janelaConsultas () 
     {
         JFrame janela = new JFrame("Consultas");
@@ -84,38 +93,37 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         btnConsultaCliente = new JButton("Consultar Cliente");
         btnConsultaEstoque = new JButton("Consultar Estoque");
         btnConsultaNota = new JButton("Consultar Nota Fiscal");
-        ////////////////////////////////////////////////////////////
+        
         btnConsultaFatProd = new JButton("Consultar Faturamento p/ Produto");
         btnConsultaFaturamento = new JButton("Consultar Faturamento p/ Cliente");
         btnDezMais = new JButton("10 Produtos Mais Vendidos");
         btnConsultaFatPeriodo = new JButton("Consultar Faturamento p/ Período");
         btnConsultaLucroLiquido = new JButton("Consultar Lucro p/ Período");
         btnConsultaClientePeriodo = new JButton("Consultar Vendas p/ Cliente & Período");
-        ////////////////////////////////////////////////////////////
+   
         
         pConsulta.add(btnConsultaCliente);
         pConsulta.add(btnConsultaEstoque);
         pConsulta.add(btnConsultaNota);
-        ////////////////////////////////////////////////////////////
         pConsulta.add(btnConsultaFatProd);
         pConsulta.add(btnConsultaFaturamento);
         pConsulta.add(btnDezMais);
         pConsulta.add(btnConsultaFatPeriodo);
         pConsulta.add(btnConsultaLucroLiquido);
         pConsulta.add(btnConsultaClientePeriodo);
-        ////////////////////////////////////////////////////////////
+
 
         btnConsultaCliente.addActionListener(this);
         btnConsultaEstoque.addActionListener(this);
         btnConsultaNota.addActionListener(this);
-        ////////////////////////////////////////////////////////////
+
         btnConsultaFatProd.addActionListener(this);
         btnConsultaFaturamento.addActionListener(this);
         btnDezMais.addActionListener(this);
         btnConsultaFatPeriodo.addActionListener (this);
         btnConsultaLucroLiquido.addActionListener (this);
         btnConsultaClientePeriodo.addActionListener (this);
-        ////////////////////////////////////////////////////////////
+ 
         
         pPrincipal.add(pConsulta);
         janela.add(pPrincipal);
@@ -151,9 +159,9 @@ public class limPrincipal extends JFrame implements ActionListener, WindowListen
         } else if (e.getSource().equals(btnConsultaFatPeriodo)) {
             ctrPrincipal.getCtrNota().consultaFatPeriodo();
         } else if (e.getSource().equals(btnConsultaLucroLiquido)) {
-            
+            ctrPrincipal.getCtrNota().consultaLucroLiquido();
         } else if (e.getSource().equals(btnConsultaClientePeriodo)) {
-            
+            ctrPrincipal.getCtrNota().consultaClientePeriodo();
         } else if (e.getSource().equals(btnConsultaPrincipal)){
             janelaConsultas();
         }

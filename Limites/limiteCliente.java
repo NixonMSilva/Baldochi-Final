@@ -17,6 +17,7 @@ public class limiteCliente extends JFrame implements ActionListener
     ControleCliente ctrCliente;
     // Elementos - Cadastro
     JPanel painelNome, painelEndereco, painelEmail, painelCPF,pBtn, pPrincipal;
+    JPanel pForm;
     JTextField txt_nome, txt_endereco, txt_email, txt_cpf;
     JLabel lNome, lEndereco, lEmail, lCpf;
     JButton btnCadastra;
@@ -33,7 +34,7 @@ public class limiteCliente extends JFrame implements ActionListener
     JButton btnConsultaFaturamento, btnFecharFaturamento;
     //////////////////////////////////
     
-    public limiteCliente(ControleCliente controle, int operacao){
+    public limiteCliente(ControleCliente controle, int operacao, String pCpf){
         super("Cliente");
         this.ctrCliente = controle;
         
@@ -49,18 +50,29 @@ public class limiteCliente extends JFrame implements ActionListener
         
         if (operacao == 0)
         {
-            //Paineis
-            pPrincipal = new JPanel(new GridLayout(5,1));
-            painelNome = new JPanel();
-            painelNome.setLayout(new FlowLayout());
-            painelEndereco = new JPanel();
-            painelEndereco.setLayout(new FlowLayout());
-            painelEmail = new JPanel();
-            painelEmail.setLayout(new FlowLayout());
-            painelCPF = new JPanel();
-            painelCPF.setLayout(new FlowLayout());
-            pBtn = new JPanel();
-
+            pPrincipal = new JPanel (new FlowLayout ());
+            pForm = new JPanel ();
+            pBtn = new JPanel ();
+            
+            GroupLayout layout = new GroupLayout (pForm);
+            pForm.setLayout (layout);
+            layout.setAutoCreateGaps (true);
+            
+            // Alinhamento do grupo
+            GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
+            
+            GroupLayout.Group yLabelGroup = layout.createParallelGroup (GroupLayout.Alignment.TRAILING);
+            hGroup.addGroup (yLabelGroup);
+            
+            GroupLayout.Group yFieldGroup = layout.createParallelGroup ();
+            hGroup.addGroup (yFieldGroup);
+            
+            layout.setHorizontalGroup (hGroup);
+            GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup ();
+            layout.setVerticalGroup (vGroup);
+            
+            int p = GroupLayout.PREFERRED_SIZE;
+            
             //Labeis
             lNome = new JLabel("Nome:");
             lEndereco = new JLabel("Endereco");
@@ -72,31 +84,32 @@ public class limiteCliente extends JFrame implements ActionListener
             txt_endereco = new JTextField(15);
             txt_email = new JTextField(15);
             txt_cpf = new JTextField(15);
-
-            //Adicao dos label e textField
-            painelNome.add(lNome);
-            painelNome.add(txt_nome);
-
-            painelEmail.add(lEmail);
-            painelEmail.add(txt_email);
-
-            painelCPF.add(lCpf);
-            painelCPF.add(txt_cpf);
-
-            painelEndereco.add(lEndereco);
-            painelEndereco.add(txt_endereco);
+            txt_cpf.setText (pCpf);
             
+            //Adicao dos label e textField
+            yLabelGroup.addComponent (lNome);
+            yLabelGroup.addComponent (lEmail);
+            yLabelGroup.addComponent (lCpf);
+            yLabelGroup.addComponent (lEndereco);
+            
+            yFieldGroup.addComponent (txt_nome, p, p, p);
+            yFieldGroup.addComponent (txt_email, p, p, p);
+            yFieldGroup.addComponent (txt_cpf, p, p, p);
+            yFieldGroup.addComponent (txt_endereco, p, p, p);
+            
+            vGroup.addGroup (layout.createParallelGroup ().addComponent(lNome).addComponent(txt_nome, p, p, p));
+            vGroup.addGroup (layout.createParallelGroup ().addComponent(lEmail).addComponent(txt_email, p, p, p));
+            vGroup.addGroup (layout.createParallelGroup ().addComponent(lCpf).addComponent(txt_cpf, p, p, p));
+            vGroup.addGroup (layout.createParallelGroup ().addComponent(lEndereco).addComponent(txt_endereco, p, p, p));
+
             pBtn.add (btnCadastra);
 
-            pPrincipal.add(painelNome);
-            pPrincipal.add(painelEmail);
-            pPrincipal.add(painelCPF);
-            pPrincipal.add(painelEndereco);
-            pPrincipal.add(pBtn);
+            pPrincipal.add (pForm);
+            pPrincipal.add (pBtn);
         }
         else if (operacao == 1)
         {
-            pPrincipal = new JPanel(new GridLayout(5,1));
+            pPrincipal = new JPanel(new FlowLayout());
             painelCPF = new JPanel(new FlowLayout());
             painelTexto = new JPanel(new FlowLayout());
             pBtn = new JPanel ();
@@ -109,6 +122,7 @@ public class limiteCliente extends JFrame implements ActionListener
 
             // Área de Texto
             txt_resultados = new JTextArea(7, 20);
+            txt_resultados.setEditable (false);
 
             // Adição aos Painéis
             painelCPF.add (lCpf);
@@ -124,8 +138,7 @@ public class limiteCliente extends JFrame implements ActionListener
         }
         else if(operacao == 2) 
         {
-            
-            pPrincipal = new JPanel(new GridLayout(3, 1));
+            pPrincipal = new JPanel(new FlowLayout());
             painelCPF = new JPanel(new FlowLayout());
             painelTexto1 = new JPanel(new FlowLayout());
             pBtn = new JPanel(new FlowLayout());
@@ -137,7 +150,8 @@ public class limiteCliente extends JFrame implements ActionListener
             txt_cpf = new JTextField(15);
 
             // Área de Texto
-            txt_resultados_faturamento = new JTextArea(10, 20);
+            txt_resultados_faturamento = new JTextArea(7, 20);
+            txt_resultados_faturamento.setEditable (false);
             
             // Adição aos Painéis
             
@@ -158,6 +172,7 @@ public class limiteCliente extends JFrame implements ActionListener
         this.setSize(290,270);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
+        this.setResizable (false);
         this.revalidate ();
         this.repaint ();
         this.setVisible(true);
@@ -187,8 +202,7 @@ public class limiteCliente extends JFrame implements ActionListener
         }
         
     }
-	
-	//////////////////////////////////
+    
     public void consultarFaturamento() {
         String dados;
         try {
@@ -200,7 +214,6 @@ public class limiteCliente extends JFrame implements ActionListener
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
-    //////////////////////////////////
 
     @Override
     public void actionPerformed(ActionEvent e) {

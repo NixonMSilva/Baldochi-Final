@@ -15,6 +15,8 @@ import Controles.ControleNotaFiscal;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import entidade.NotaFiscal;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -30,6 +32,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     int[] validade;
     float[] preco;
     float[] precoXqtd;
+    float[] lucroXqtd;
     
     JPanel pPrincipal, pCliente, pMercadoria, pPreco, pData, pBotoes;
     JLabel lCliente, lPreco, lData;
@@ -53,7 +56,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     JTextField txtDataInicio, txtDataFim;
     JTextArea txtResultadoData;
     JLabel lDataInicio, lDataFim;
-    JButton btnBuscaPorData;
+    JButton btnBuscaPorData, btnBuscaPorDataC, btnBuscaLL;
     
     public limiteNotaFiscal (ControleNotaFiscal cn, int operacao) 
     {
@@ -150,6 +153,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             pPrincipal.add (pPreco);
             pPrincipal.add (pBotoes);
             
+            this.setSize (650, 450);
         }
         else if (operacao == 1)
         {
@@ -160,7 +164,8 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             // Labels e Textos
             lNroNota = new JLabel ("Número da Nota:");
             txtNroNota = new JTextField (9);
-            areaResultados = new JTextArea ();
+            areaResultados = new JTextArea (15, 20);
+            areaResultados.setEditable (false);
             
             // Botões
             btnBusca = new JButton ("Buscar");
@@ -181,16 +186,18 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             pPrincipal.add (pNroNota);
             pPrincipal.add (pResultados);
             pPrincipal.add (pBotoes);
+            
+            this.setSize (300, 375);
         }
         else if (operacao == 2)
         {
-            pDatas = new JPanel (new FlowLayout());
+            pDatas = new JPanel (new GridLayout (2, 2, 0, 15));
             pResultadoData = new JPanel (new FlowLayout());
             
-            txtDataInicio = new JTextField (15);
-            txtDataFim = new JTextField (15);
+            txtDataInicio = new JTextField (10);
+            txtDataFim = new JTextField (10);
             
-            txtResultadoData = new JTextArea ();
+            txtResultadoData = new JTextArea (15, 20);
             txtResultadoData.setEditable (false);
             
             lDataInicio = new JLabel ("Início");
@@ -213,12 +220,93 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             pPrincipal.add (pResultadoData);
             pPrincipal.add (pBotoes);
             
+            this.setSize (300, 400);
+        }
+        else if (operacao == 3)
+        {
+            pDatas = new JPanel (new GridLayout(3, 3, 0, 15));
+            pResultadoData = new JPanel (new BorderLayout());
             
-
+            txtCPFCliente = new JTextField (10);
+            txtDataInicio = new JTextField (10);
+            txtDataFim = new JTextField (10);
+            
+            txtResultadoData = new JTextArea (15, 20);
+            txtResultadoData.setEditable (false);
+            txtResultadoData.setWrapStyleWord (true);
+            txtResultadoData.setLineWrap (true);
+            
+            JScrollPane sp = new JScrollPane ();
+            sp.setPreferredSize (new Dimension (10, 200));
+            sp.setViewportView (txtResultadoData);
+            
+            lDataInicio = new JLabel ("Início");
+            lDataFim = new JLabel ("Fim");
+            lCliente = new JLabel ("CPF do Cliente:");
+            
+            btnBuscaPorDataC = new JButton ("Buscar");
+            btnBuscaPorDataC.addActionListener (this);
+            
+            pDatas.add (lDataInicio);
+            pDatas.add (txtDataInicio);
+            
+            pDatas.add (lDataFim);
+            pDatas.add (txtDataFim);
+            pDatas.add (lCliente);
+            
+            pDatas.add (txtCPFCliente);
+            
+            pResultadoData.add (txtResultadoData, BorderLayout.CENTER);
+            pResultadoData.add (sp, BorderLayout.LINE_END);
+            
+            pBotoes.add (btnBuscaPorDataC);
+            pBotoes.add (btnFecha);
+            
+            pPrincipal.add (pDatas);
+            pPrincipal.add (pResultadoData);
+            pPrincipal.add (pBotoes);
+            
+            this.setSize (300, 425);
+        }
+        else if (operacao == 4)
+        {
+            pDatas = new JPanel (new GridLayout(3, 3, 0, 15));
+            pResultadoData = new JPanel (new FlowLayout());
+            
+            txtDataInicio = new JTextField (10);
+            txtDataFim = new JTextField (10);
+            
+            txtResultadoData = new JTextArea (10, 20);
+            txtResultadoData.setEditable (false);
+            
+            JScrollPane sp = new JScrollPane (txtResultadoData);
+            
+            lDataInicio = new JLabel ("Início");
+            lDataFim = new JLabel ("Fim");
+            
+            btnBuscaLL = new JButton ("Buscar");
+            btnBuscaLL.addActionListener (this);
+            
+            pDatas.add (lDataInicio);
+            pDatas.add (txtDataInicio);
+            pDatas.add (lDataFim);
+            pDatas.add (txtDataFim);
+            
+            pResultadoData.add (txtResultadoData);
+            pResultadoData.add (sp);
+            
+            pBotoes.add (btnBuscaLL);
+            pBotoes.add (btnFecha);
+            
+            pPrincipal.add (pDatas);
+            pPrincipal.add (pResultadoData);
+            pPrincipal.add (pBotoes);
+            
+            this.setSize (300, 350);
         }
         
+        
         this.add (pPrincipal);
-        this.setSize (650, 450);
         this.setResizable (false);
         this.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo (null);
@@ -233,7 +321,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     
     public void emitirNota (String pCPF, String pData)
     {
-        ctrNota.concluirEmissaoNota (pCPF, pData, codigo, qtd, validade, getPrecoTotal ());
+        ctrNota.concluirEmissaoNota (pCPF, pData, codigo, qtd, validade, getPrecoTotal(), getLucroTotal());
         this.dispose ();
     }
     
@@ -245,10 +333,9 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         } catch (Exception e) {
             JOptionPane.showMessageDialog (null, e.getMessage ());
         }
-        
     }
     
-    public void consultarNota()
+    public void consultarNota ()
     {
         int nroNota = Integer.parseInt (txtNroNota.getText ());
         if (!ctrNota.concluirBuscaNota (nroNota))
@@ -257,23 +344,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
     
     public void imprimeNota (NotaFiscal nota, int ocasiao)
     {
-        System.out.println (nota.isCancelada ());
-        int qtd_produtos = (nota.getProdutos().size() / 2);
-        ArrayList<Integer> prod = nota.getProdutos();
-        String saida = "Nro Nota: " + nota.getNroNota () + "\n" +
-                "Cliente: " + nota.getCPF () + "\n" +
-                "Data: "  + nota.getData() + "\n" +
-                "Qtd.: " + qtd_produtos + "\n" +
-                "Produto:           Qtd.:\n";
-        for (int i = 0; i < qtd_produtos; ++i)
-        {
-            Integer id = prod.get (i * 2);
-            Integer qtde = prod.get ((i * 2) + 1);
-            saida += ctrNota.getDesc (id) + "          " + qtde + "\n";
-        }
-        saida += "Preço Total: R$ " + nota.getPreco_total();
-        if (nota.isCancelada ())
-            saida += "\nNOTA CANCELADA";
+        String saida = ctrNota.imprimeNota (nota);
         if (ocasiao == 0)
             JOptionPane.showMessageDialog (null, saida);
         else
@@ -288,8 +359,29 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             txtResultadoData.setText ("Faturamento: R$ " + valorFaturamento);
         } catch (Exception e) {
             JOptionPane.showMessageDialog (null, e.getMessage ());
+        }    
+    }
+    
+    private void consultaFaturamentoDataCliente (String inicio, String fim, String cpf)
+    {
+        String saida;
+        try {
+            saida = ctrNota.concluiConsultaClientePeriodo (inicio, fim, cpf);
+            txtResultadoData.setText (saida);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog (null, e.getMessage ());
         }
-        
+    }
+    
+    public void consultaLucroLiquido (String inicio, String fim)
+    {
+        double valorLucro;
+        try {
+            valorLucro = ctrNota.concluiConsultaLucroLiquido (inicio, fim);
+            txtResultadoData.setText ("Lucro: R$ " + valorLucro);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog (null, e.getMessage ());
+        }    
     }
     
     // !----------------------------------------------! //
@@ -302,29 +394,28 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         boolean flag = true;
         if (!validaNota (pCPF, pData))
         {
+            flag = false;
             for (int i = 0; i < 10; ++i)
             {
                 if (validade[i] == 1)
-                {
                     erro += "Erro com o produto " + (i+1) + ": Código inexistente\n";
-                    flag = false;
-                }  
                 else if (validade[i] == 2)
-                {
-                    erro += "Erro com o produto " + (i+1) + ": Quantidade excede aquela do estoque ou valores inválidos\n";
-                    flag = false;
-                }     
+                    erro += "Erro com o produto " + (i+1) + ": Quantidade excede aquela do estoque ou valores inválidos\n";    
                 else if (validade[i] == 3)
-                {
                     erro += "Erro com o produto " + (i+1) +  ": Campo de quantidade vazio\n";
-                    flag = false;
-                }
                 else if (validade[i] == 4)
-                {
                     erro += "Erro com o produto " + (i+1) + ": Campo de código vazio\n";
-                    flag = false;
-                }
             }
+        }
+        if (!checaTotalmenteVazio ())
+        {
+            flag = false;
+            erro += "Erro: Não há nenhuma mercadoria posta para venda!";
+        }
+        else
+        {
+            flag = checaCamposRepetidos ();
+            erro += "Erro: Campos diferentes com códigos de produtos iguais!";
         }
         if (!erro.isEmpty ())
                 JOptionPane.showMessageDialog (null, erro);
@@ -337,12 +428,25 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         qtd = new int[10];
         preco = new float[10];
         precoXqtd = new float[10];
+        lucroXqtd = new float[10];
         validade = new int[10];
         Boolean valido = true;
-        
+        for (int i = 0; i < 10; ++i)
+        {
+            validade[i] = -1;
+        }
         if (!ctrNota.validaCPF (pCPF))
         {
-            JOptionPane.showMessageDialog (null, "CPF não cadastrado!");
+            if (!pCPF.isEmpty ())
+            {
+                int resposta = JOptionPane.showConfirmDialog (null, "CPF não cadastrado. Realizar cadastro?");
+                if (resposta == JOptionPane.YES_OPTION)
+                {
+                   ctrNota.cadastraCPF (pCPF); 
+                }
+            }
+            else
+                JOptionPane.showMessageDialog (null, "Campo de CPF vazio!");
             return false;
         }
         if (!ctrNota.validaData (pData, "dd/MM/yyyy"))
@@ -353,7 +457,6 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         vetoresAtualiza ();
         for (int i = 0; i < 10; ++i)
         {
-            
             if (validade[i] > 0)
             {
                 valido = false;
@@ -379,6 +482,33 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         return ctrNota.validaQtd (pCodigo, pQtd);
     }   
     
+    public boolean checaCamposRepetidos ()
+    {
+        for (int i = 0; i < 10; ++i)
+        {
+            // System.out.println ("Validade [" + i + "] = " + validade[i]);
+            if (validade[i] == 0)
+            { 
+                for (int j = i + 1; j < 10; ++j)
+                {
+                    if (codigo[i] != 0 && codigo[i] == codigo[j])
+                        return false;
+                } 
+            } 
+        }
+        return true;
+    }
+    
+    public boolean checaTotalmenteVazio ()
+    {
+        for (int i = 0; i < 10; ++i)
+        {
+            if (validade[i] >= 0)
+                return true;
+        }
+        return false;
+    }
+    
     // !----------------------------------------------! //
     // GETTERS                                          //
     // !----------------------------------------------! //
@@ -392,14 +522,20 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
         }
         return soma;
     }
+    
+    private float getLucroTotal () 
+    {
+        float soma = 0;
+        for (int i = 0; i < 10; ++i)
+        {
+            soma += lucroXqtd[i];
+        }
+        return soma;
+    }
 
     private void vetoresAtualiza ()
     {
         int codInteiro, qtdInteiro;
-        for (int i = 0; i < 10; ++i)
-        {
-            validade[i] = -1;
-        }
         for (int k = 0; k < 10; ++k) 
         {
             String codFieldAux = txtCod[k].getText ();
@@ -416,6 +552,7 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
                         validade[k] = 0;
                         preco[k] = ctrNota.getPreco (codInteiro);
                         precoXqtd[k] = ctrNota.getPrecoQtd (codInteiro, qtdInteiro);
+                        lucroXqtd[k] = ctrNota.getLucroQtd (codInteiro, qtdInteiro);
                         codigo[k] = codInteiro;
                         qtd[k] = qtdInteiro;
                     }
@@ -474,6 +611,19 @@ public class limiteNotaFiscal extends JFrame implements ActionListener {
             String inicio = txtDataInicio.getText ();
             String fim = txtDataFim.getText ();
             consultaFaturamentoData (inicio, fim);
+        }
+        else if (e.getSource () == btnBuscaPorDataC)
+        {
+            String inicio = txtDataInicio.getText ();
+            String fim = txtDataFim.getText ();
+            String cpf = txtCPFCliente.getText ();
+            consultaFaturamentoDataCliente (inicio, fim, cpf);
+        }
+        else if (e.getSource () == btnBuscaLL)
+        {
+            String inicio = txtDataInicio.getText ();
+            String fim = txtDataFim.getText ();
+            consultaLucroLiquido (inicio, fim);
         }
         else if (e.getSource () == btnFecha)
         {

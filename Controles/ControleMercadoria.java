@@ -90,18 +90,18 @@ public class ControleMercadoria {
         {
             if (ObjM.getCod() == pCod)
             {
-                System.out.println ("Qt. Disponível Antes: " + ObjM.getQt_disp ());
-                System.out.println ("Qt. Vendida Antes: " + ObjM.get_qt_vendida ());
+//                System.out.println ("Qt. Disponível Antes: " + ObjM.getQt_disp ());
+//                System.out.println ("Qt. Vendida Antes: " + ObjM.get_qt_vendida ());
                 ObjM.setQt_disp (ObjM.getQt_disp () - pQtd);
                 if (situacao == 0)
                     ObjM.add_vendido (pQtd);
                 else
                 {
-                    System.out.println ("Entrou aqui");
+//                    System.out.println ("Entrou aqui");
                     ObjM.add_vendido (pQtd);
                 }
-                System.out.println ("Qt. Disponível Depois: " + ObjM.getQt_disp ());
-                System.out.println ("Qt. Vendida Depois: " + ObjM.get_qt_vendida ());
+//                System.out.println ("Qt. Disponível Depois: " + ObjM.getQt_disp ());
+//                System.out.println ("Qt. Vendida Depois: " + ObjM.get_qt_vendida ());
             }
         }
     }
@@ -115,6 +115,7 @@ public class ControleMercadoria {
             if (pCod == m.getCod ()) {
                 String ans = "Qtd. no Estoque: " + m.getQt_disp () + "\n" +
                         "Descrição: " + m.getDescricao () + "\n" +
+                        "Preço de Compra: R$ " + m.getPreco () + "\n" +
                         "Preço de Venda: R$ " + m.getValor_venda () + "\n" +
                         "Quantidade Vendida:" + m.get_qt_vendida ();
                 return ans;
@@ -130,9 +131,13 @@ public class ControleMercadoria {
     
     public String faturamentoMercadoria (int pCod) throws Exception
     {
-        for (Mercadoria m: listaMercadoria) {
-            if (pCod == m.getCod ()) {
-                String ans = "Faturamento: R$ " + m.getValor_venda()*m.get_qt_vendida ();
+        for (Mercadoria m: listaMercadoria) 
+        {
+            if (pCod == m.getCod ()) 
+            {
+                String ans = "Produto: " + m.getDescricao () + "\nQtd. Vendida: " +
+                        m.get_qt_vendida () + "\nPreço Unitário: " + m.getValor_venda () +
+                        "\nFaturamento: R$ " +  (m.getValor_venda() * m.get_qt_vendida ());
                 return ans;
             }
         }
@@ -222,6 +227,18 @@ public class ControleMercadoria {
             if (m.getCod () == pCodigo)
             {
                 return m.getValor_venda () * pQtd;
+            }
+        }
+        return 0;
+    }
+    
+    public float getLucroQtd (int pCodigo, int pQtd)
+    {
+        for (Mercadoria m : listaMercadoria)
+        {
+            if (m.getCod () == pCodigo)
+            {
+                return (m.getValor_venda () - m.getPreco ()) * pQtd;
             }
         }
         return 0;
