@@ -237,7 +237,7 @@ public class ControleNotaFiscal
             {
                 if ((nf.getData().compareTo(dataInicio) >= 0) && (nf.getData().compareTo(dataFim) <= 0) && (!nf.isCancelada ()))
                 {
-                    System.out.println (nf.isCancelada ());
+                    // System.out.println (nf.isCancelada ());
                     // System.out.println ("Nota Fiscal encontrada! Data: " + nf.getData () + "\nNro Nota: " + nf.getNroNota ());
                     lucroAcumulado += nf.getLucro_total ();
                 }
