@@ -1,4 +1,6 @@
-Final course work for OOP in University.
+Trabalho final de disciplina:
+
+SGVF - Sistema de Gestão de Vendas de Farmácia
 
 Programação Orientada a Objetos (COM210)
 
